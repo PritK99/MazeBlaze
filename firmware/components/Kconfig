@@ -1,0 +1,8 @@
+menu "SRA Board Component Config"
+config NUMBER_OF_SAMPLES
+    int "Number of samples for multisampling ADC values to use with LSA"
+    default 5
+    help
+        sets the number of ADC samples to average to use with LSA
+        
+endmenu
