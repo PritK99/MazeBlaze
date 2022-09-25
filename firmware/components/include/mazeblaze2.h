@@ -9,5 +9,6 @@
 #include "lsa.h" 
 #include "motor_driver.h"
 #include "pin_defs.h"
+#include "line_following.h"
 
 #endif

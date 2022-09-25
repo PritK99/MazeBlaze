@@ -44,4 +44,6 @@
 #define MDA_NORMAL_IN_5 27 //MCPWM_UNIT_1 MCPWM2A bin1
 #define MDA_NORMAL_IN_6 14 //MCPWM_UNIT_1 MCPWM2B bin2
 
+#define MOSFET_PWM 9 
+
 #endif

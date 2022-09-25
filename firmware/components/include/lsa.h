@@ -9,6 +9,7 @@
 
 
 esp_err_t enable_lsa() ;
+void set_brightness(int val) ;
 int get_raw_lsa() ;
 
 #endif 
