@@ -11,26 +11,6 @@ char Turn ;
 float error=0, prev_error=0, difference, cumulative_error, correction; 
 float left_duty_cycle = 0, right_duty_cycle = 0;
 
-<<<<<<< HEAD
-while(1)
-{
-    get_raw_lsa() ;
-    turn_detection();
-    turn();
-               
-    
-}
-
-/*********************************************************************************/
-
-void calculate_error()
-{
-    int all_black_flag = 1; // assuming initially all black condition
-    float weighted_sum = 0, sum = 0; 
-    float pos = 0; 
-    
-    for(int i = 0; i < 4; i++)
-=======
 /*
 possible cases of errors :-
 1) All the front sensor read black
@@ -52,24 +32,23 @@ void calculate_error()
             error = -2.5;
         }
     }
-    else if (lsa_readings[1] == 0 && lsa_readings[3] == 1)
->>>>>>> 253bccb81c0329507b01baa090ef205fcd3da804
+    else if (lsa_reading[1] == 0 && lsa_reading[3] == 1000)
     {
         /* turn right to nullify */
         error = 1 ;
     }
-    else if (lsa_readings[1] == 1 && lsa_readings[3] == 0)
+    else if (lsa_reading[1] == 1000 && lsa_reading[3] == 0)
     {
         /* turn left to nullify */
         error = -1 ;
     }
-    else if (lsa_radings[1] == lsa_radings[2] == lsa_radings[3] == 1)
+    else if (lsa_reading[1] == lsa_reading[2] == lsa_reading[3] == 1000)
     {
         /* no error */
         error = 0 ; 
     }
     else
-    {
+    { 
         error = prev_error ; //this case is for safety
     }   
 }
