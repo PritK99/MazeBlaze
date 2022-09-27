@@ -1,14 +1,23 @@
 #include <stdio.h>
 #include "mazeblaze2.h"
+/* 1 - w 
+2 - nw
+3 - n 
+4 - ne 
+5 - e 
+6 - se 
+7 - s
+8 - sw */
 
-#define NORTH 0
-#define WEST 2
-#define SOUTH 4
-#define EAST 6
+#define NORTH 3
+#define WEST 1
+#define SOUTH 7
+#define EAST 5
 
-char path[200] = "";
-char dir[200] = "";
-float deg[200] = "";
+char path[200] = " ";
+char dir[200] = " ";
+float deg[200] = " ";
+int turn;
 
 
 
@@ -17,12 +26,14 @@ char select_turn()
     if (lsa_reading[0]==1)
     {
       activate_left_counter++;
+      deg = (state.position)*0.055;
       
     }
 
     if (lsa_reading[4]==1)
     {
         activate_right_counter++;
+        
     }
 }
 

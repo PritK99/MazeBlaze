@@ -8,7 +8,7 @@ int prev_lsa1_counter = 0 ;
 int prev_lsa3_counter = 0 ; 
 bool straight_possible = false ;
 
-void app_main(void)
+void turning()
 {
     while(1)
     {

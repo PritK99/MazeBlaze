@@ -127,5 +127,6 @@ float bound(float val, float min, float max) //To bound a certain value in range
 void app_main()
 {
     xTaskCreate(&line_follow_task, "line_follow_task", 4096, NULL, 1, NULL);    //creating a task to start line following
+    xTaskCreate(&turning, "turning", 4096, NULL, 1, NULL)
     start_tuning_http_server();    
 }
