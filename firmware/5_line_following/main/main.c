@@ -7,17 +7,43 @@
 
 int actiavate_left_counter =0;
 int actiavate_right_counter =0;
-char Turn ;
+int Turn ;
 float error=0, prev_error=0, difference, cumulative_error, correction; 
 float left_duty_cycle = 0, right_duty_cycle = 0;
+int prev_Turn ;
+int prev_lsa1_counter = 0 ; 
+int prev_lsa3_counter = 0 ; 
+bool straight_possible = false ;
 
-/*
-possible cases of errors :-
-1) All the front sensor read black
-2) if lsa_radings [1] != lsa_radings [2] != lsa_radings [3]
 
-error to right of line is positive while left of line is negative
-*/
+
+//In LFR , we are limiting our use to directions 1 , 3 , 5 ,7 and we plan to get angle via encoders only 
+//For DFS , we will use all 8 directions
+void circular_defn(int change_in_dir)
+{
+    /*The use of this function is have a circular defination from 1 to 8 
+    1 - W , 2 - NW , 3 - N , 4 - NE , 5 - E , 6 - SE , 7 - S , 8 - SW 
+    The difference of 4 stands for u turn i.e. dead end . this will help us to delete that path from char array 
+    subtracting 4 from 1 will give 5 according tio this function */
+    int temp = Turn ;
+    Turn = prev_Turn + change_in_dir ; //for LFR , change_in_dir = -2 means left
+    prev_Turn = temp ; 
+
+    if (Turn <= 0)
+    {
+        Turn = Turn + 8 ;
+        /*fpr eg . if you were moving in west i.e. 1 and then you were to take left . As per LFR , your new direction is 1 - 2 = -1 ;
+        now -1 + 8 is 7 which is 7 . Now using LFR you are facing lsouth which is also 7*/
+    }
+    if (Turn <= 0)
+    {
+        Turn = Turn - 8 ;
+        /*fpr eg . if you were moving in south i.e. 7 and then you were to take right . As per LFR , your new direction is 7 + 2 = 9 ;
+        now 9 - 8 is 1 which is 1 . Now using LFR you are facing west which is also 1*/
+    }
+
+}
+
 void calculate_error()
 {
     if (lsa_reading[1] == 0 && lsa_reading[2] == 0 && lsa_reading[3] == 0 )
@@ -32,23 +58,23 @@ void calculate_error()
             error = -2.5;
         }
     }
-    else if (lsa_reading[1] == 0 && lsa_reading[3] == 1000)
+    else if (lsa_reading[1] == 0 && lsa_reading[3] == 1)
     {
         /* turn right to nullify */
         error = 1 ;
     }
-    else if (lsa_reading[1] == 1000 && lsa_reading[3] == 0)
+    else if (lsa_reading[1] == 1 && lsa_reading[3] == 0)
     {
         /* turn left to nullify */
         error = -1 ;
     }
-    else if (lsa_reading[1] == lsa_reading[2] == lsa_reading[3] == 1000)
+    else if (lsa_reading[1] == 1 && lsa_reading[2] == 1 && lsa_reading[3] == 1)
     {
         /* no error */
         error = 0 ; 
     }
     else
-    { 
+    {
         error = prev_error ; //this case is for safety
     }   
 }
@@ -61,7 +87,7 @@ void calculate_correction()
 
     cumulative_error = bound(cumulative_error, -30, 30); //bounding cumulative_error to avoid the issue of cumulative_error being very large
 
-    correction = read_pid_const().kp*error + read_pid_const().ki*cumulative_error + read_pid_const().kd*difference; //defined in http_server.c
+    // correction = read_pid_const().kp*error + read_pid_const().ki*cumulative_error + read_pid_const().kd*difference; //defined in http_server.c
 
     prev_error = error; //update error
 }
@@ -85,14 +111,100 @@ void line_follow_task(void* arg)
         set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, right_duty_cycle);
 
         /*prints on terminal*/
-        ESP_LOGI("debug","left_duty_cycle:  %f    ::  right_duty_cycle :  %f  :: error :  %f  correction  :  %f  \n",left_duty_cycle, right_duty_cycle, error, correction);
-        ESP_LOGI("error_correction", "KP: %f ::  KI: %f  :: KD: %f", read_pid_const().kp, read_pid_const().ki, read_pid_const().kd);
+        // ESP_LOGI("debug","left_duty_cycle:  %f    ::  right_duty_cycle :  %f  :: error :  %f  correction  :  %f  \n",left_duty_cycle, right_duty_cycle, error, correction);
+        // ESP_LOGI("error_correction", "KP: %f ::  KI: %f  :: KD: %f", read_pid_const().kp, read_pid_const().ki, read_pid_const().kd);
 
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
     vTaskDelete(NULL);
 }
+
+void turn_task(void *arg)
+{
+    while(1)
+    {
+        get_raw_lsa() ;
+
+        /* This part detects if there is a node and if there is , it reduces the speed to pwm 65 and works on counters*/
+        if (lsa_reading[0] == 1) /*A path in left detected once */
+        {
+            if (lsa_reading[1] != prev_lsa1_counter)
+            {
+                actiavate_left_counter ++ ;
+                prev_lsa1_counter = lsa_reading[0] ;
+            }
+            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 100) ;//Reduce pwm to 65 to slow down to bot 
+            set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 100) ;
+        }
+        if (lsa_reading[4] == 1) //A path in right detected first/
+        {
+            if (lsa_reading[3] != prev_lsa3_counter)
+            {
+                actiavate_right_counter ++ ;
+                prev_lsa1_counter = lsa_reading[3] ;
+            }
+            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Reduce pwm to 65 to slow down to bot 
+            set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
+        }
+        if( (actiavate_left_counter > 0 )&& (actiavate_right_counter > 0 )&& ( lsa_reading[1] == 1) &&  (lsa_reading[2] == 1) && (lsa_reading[3] == 1 )) //straight does exsist even though left or right counter are incremented/
+        {
+            straight_possible = true ;
+        }
+
+        //This part of the code takes action on the basis of the node detected/
+        if (actiavate_left_counter > 0 && lsa_reading[5] == 1)
+        {
+            circular_defn(-2) ;
+            do
+            {
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
+                set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
+                if (lsa_reading[3] != prev_lsa3_counter)
+                    {
+                        actiavate_right_counter = actiavate_left_counter ; 
+                        prev_lsa1_counter = lsa_reading[3] ;
+                    }
+            }
+            while ((lsa_reading[1] == 1) &&  (lsa_reading[2] == 1) && (lsa_reading[3] == 1 ) && (actiavate_left_counter == 1)) ;
+        }
+        else if ( straight_possible )
+        {
+            circular_defn(0) ;
+            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 75) ;//Increase PWM since we have to go straight 
+            set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 75) ;
+        }
+        else if (actiavate_right_counter > 0 && lsa_reading[6] == 1)
+        {
+            circular_defn(+2) ;
+            do
+            {
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;
+                set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
+            }
+            while ((lsa_reading[1] == 1) &&  (lsa_reading[2] == 1) && (lsa_reading[3] == 1 )) ;
+        } 
+        else
+        {
+            circular_defn(-4) ;
+            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Increase PWM since we have to go straight 
+            set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
+            do
+            {
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
+                set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
+                if (lsa_reading[3] != prev_lsa3_counter)
+                    {
+                        actiavate_right_counter = actiavate_left_counter ; 
+                        prev_lsa1_counter = lsa_reading[3] ;
+                    }
+            }
+            while ((lsa_reading[1] == 1) &&  (lsa_reading[2] == 1) && (lsa_reading[3] == 1 )&& (actiavate_left_counter == 1)) ;
+        }        
+        
+    }
+}
+
 
 float bound(float val, float min, float max) //To bound a certain value in range MAX to MIN 
 {
@@ -106,6 +218,6 @@ float bound(float val, float min, float max) //To bound a certain value in range
 void app_main()
 {
     xTaskCreate(&line_follow_task, "line_follow_task", 4096, NULL, 1, NULL);    //creating a task to start line following
-    xTaskCreate(&turning, "turning", 4096, NULL, 1, NULL)
-    start_tuning_http_server();    
+    xTaskCreate(&turn_task, "turning", 4096, NULL, 1, NULL);
+    // start_tuning_http_server();    
 }

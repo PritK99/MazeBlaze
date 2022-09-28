@@ -5,10 +5,9 @@
 void app_main(void)
 {
     ESP_ERROR_CHECK(enable_lsa());
-    set_brightness(80);
+    set_brightness(100);
     while (1)
     {
-        
         get_raw_lsa();
         vTaskDelay(10/portTICK_PERIOD_MS) ;
     }

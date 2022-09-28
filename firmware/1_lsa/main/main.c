@@ -4,6 +4,7 @@
 void app_main(void)
 {
     ESP_ERROR_CHECK(enable_lsa()) ;
+    set_brightness(100);
 
     while (1)
     {
