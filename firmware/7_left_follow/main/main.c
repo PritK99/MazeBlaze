@@ -84,13 +84,6 @@ char select_turn()
         }
         
     }
-
-    if (lsa_reading[4] == 1)
-    {
-        actiavate_right_counter++;
-        count -= 2;
-        dirFunc(count);
-    }
 }
 
 void redundant_path()
