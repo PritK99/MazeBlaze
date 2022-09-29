@@ -32,8 +32,8 @@
 #define LSA_D4 36
 #define LSA_D5 33
 
-#define SCL_OLED 22
-#define SDA_OLED 21
+// #define SCL_OLED 22
+// #define SDA_OLED 21
 
 /////// motor driver ////////
 //****** normal mode ******//

@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/CMakeFiles/bootloader
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/CMakeFiles/bootloader.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/CMakeFiles/bootloader-complete.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/raj/Desktop/MazeBlaze-v2.1/firmware/5_line_following/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
