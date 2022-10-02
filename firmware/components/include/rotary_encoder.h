@@ -132,6 +132,8 @@ esp_err_t rotary_encoder_get_state(const rotary_encoder_info_t * info, rotary_en
  */
 esp_err_t rotary_encoder_reset(rotary_encoder_info_t * info);
 
+void get_degree(); 
+
 
 #ifdef __cplusplus
 }

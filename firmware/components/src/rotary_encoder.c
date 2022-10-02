@@ -6,6 +6,7 @@
 #include "rotary_encoder.h"
 #include "esp_log.h"
 #include "driver/gpio.h"
+#include <math.h>
 
 #define TAG "rotary_encoder"
 
@@ -13,6 +14,9 @@
 
 // Use a single-item queue so that the last value can be easily overwritten by the interrupt handler
 #define EVENT_QUEUE_LENGTH 1
+
+#define ROT_ENC_A_GPIO 17
+#define ROT_ENC_B_GPIO 5 
 
 #define TABLE_ROWS 7
 
@@ -46,6 +50,8 @@ static const uint8_t _ttable_half[TABLE_ROWS][TABLE_COLS] = {
 #  define F_CCW_FINAL 0x5
 #  define F_CCW_NEXT  0x6
 
+float degree ;
+
 static const uint8_t _ttable_full[TABLE_ROWS][TABLE_COLS] = {
     // 00        01           10           11                  // BA
     {R_START,    F_CW_BEGIN,  F_CCW_BEGIN, R_START},           // R_START
@@ -56,6 +62,67 @@ static const uint8_t _ttable_full[TABLE_ROWS][TABLE_COLS] = {
     {F_CCW_NEXT, F_CCW_FINAL, R_START,     R_START | DIR_CCW}, // F_CCW_FINAL
     {F_CCW_NEXT, F_CCW_FINAL, F_CCW_BEGIN, R_START},           // F_CCW_NEXT
 };
+
+float confine_angle (float angle)
+//an error of 15 degrees can be tolerated
+{
+    float degree ;
+    
+    if (fabs(angle-45) <= 15  ) 
+    {
+        degree= 45 ; //puts the new value of turn in degree_index and then increments the index 
+    }
+    if (fabs(angle-90) <= 15  ) 
+    {
+        degree = 90 ;
+    }
+    if (fabs(angle-135) <= 15  ) 
+    {
+        degree = 135 ;
+    }
+    if (fabs(angle-180) <= 15  ) 
+    {
+        degree = 135 ;
+    }
+
+    return degree ;
+}
+
+void get_degree()
+{
+     // esp32-rotary-encoder requires that the GPIO ISR service is installed before calling rotary_encoder_register()
+    ESP_ERROR_CHECK(gpio_install_isr_service(0));
+
+    // Initialise the rotary encoder device with the GPIOs for A and B signals
+    rotary_encoder_info_t info = { 0 };
+    ESP_ERROR_CHECK(rotary_encoder_init(&info, ROT_ENC_A_GPIO, ROT_ENC_B_GPIO));
+  
+
+    // Create a queue for events from the rotary encoder driver.
+    // Tasks can read from this queue to receive up to date position information.
+    QueueHandle_t event_queue = rotary_encoder_create_queue();
+    ESP_ERROR_CHECK(rotary_encoder_set_queue(&info, event_queue));
+
+    while (1)
+    {
+        // Wait for incoming events on the event queue.
+        rotary_encoder_event_t event = { 0 };
+        if (xQueueReceive(event_queue, &event, 1000 / portTICK_PERIOD_MS) == pdTRUE)
+        {
+        
+            degree = ((event.state.position)) ;//*0.055*57.3)/5.5);
+            degree = confine_angle(degree) ;
+            ESP_LOGI(TAG, "Degree: %lf", degree);
+
+        }
+        
+    }
+    ESP_LOGE(TAG, "queue receive failed");
+
+    ESP_ERROR_CHECK(rotary_encoder_uninit(&info));
+   
+
+}
 
 static uint8_t _process(rotary_encoder_info_t * info)
 {
