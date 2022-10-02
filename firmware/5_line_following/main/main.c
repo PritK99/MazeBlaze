@@ -34,23 +34,20 @@ void turn_task(void *arg)
         get_raw_lsa() ;
 
         /* This part detects if there is a node and if there is , it reduces the speed to pwm 65 and works on counters*/
+
         if (lsa_reading[0] == 1) /*A path in left detected once */
         {
-            if (lsa_reading[1] != prev_lsa1_counter)
+            if (lsa_reading[0] != prev_lsa0_value) /*records change in values i.e. increments if there is any difference between 2 values*/
             {
                 actiavate_left_counter ++ ;
-                prev_lsa1_counter = lsa_reading[0] ;
+                prev_lsa0_value = lsa_reading[0] ;
             }
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Reduce pwm to 65 to slow down to bot 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
         }
         if (lsa_reading[4] == 1) /*A path in right detected first*/
         {
-            if (lsa_reading[3] != prev_lsa3_counter)
-            {
-                actiavate_right_counter ++ ;
-                prev_lsa1_counter = lsa_reading[3] ;
-            }
+            actiavate_right_counter ++ ;    //we dont care about the number of paths in right , since it has to get the fist right it sees
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Reduce pwm to 65 to slow down to bot 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
         }
@@ -58,22 +55,27 @@ void turn_task(void *arg)
         {
             straight_possible = true ;
         }
+        if ((lsa_reading[0] == 1 ) && (lsa_reading[1] == 1 ) &&  (lsa_reading[2] == 1 ) &&  (lsa_reading[3] == 1 ) &&  lsa_reading[4] == 1 )  //when the entire array of IR's read white
+        {
+            is_end = true ;
+        }
 
         /*This part of the code takes action on the basis of the node detected*/
-        if (actiavate_left_counter > 0 && lsa_reading[5] == 1)
+
+        if (actiavate_left_counter > 0 && lsa_reading[5] == 1)      //takes last left it sees
         {
             circular_defn(-2) ;     //for turning left , we do -2 
             do
             {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; //motor A_0 has to go forward and motor A_1 has to go backwards to take left 
                 set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
-                if (lsa_reading[3] != prev_lsa3_counter)
+                if (lsa_reading[2] != prev_lsa2_value)
                     {
-                        actiavate_right_counter = actiavate_left_counter ; 
-                        prev_lsa1_counter = lsa_reading[3] ;
+                        actiavate_left_counter -- ;     //decrement the counter and avoid the path since it not the leftmost path
+                        prev_lsa2_value = lsa_reading[2] ;
                     }
             }
-            while (( lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 ) && actiavate_left_counter == 1) ;
+            while (( lsa_reading[1] == 0) && ( lsa_reading[2] == 0 ) && ( lsa_reading[3] == 0 ) && actiavate_left_counter <= 2) ;
         }
         else if ( straight_possible )
         {
@@ -81,37 +83,42 @@ void turn_task(void *arg)
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 75) ;//Increase PWM since we have to go straight 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 75) ;
         }
-        else if (actiavate_right_counter > 0 && lsa_reading[6] == 1)
+        else if (actiavate_right_counter > 0 && lsa_reading[6] == 1)    //takes first right it sees
         {
             circular_defn(+2) ;     //for turning right , we do +2 
             do
             {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;
-                set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
+                set_motor_speed(MOTOR_A_0 , MOTOR_BACKWARD , 65) ;  //motor A_0 has to go backward and motor A_1 has to go forwards to take right 
+                set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
+                /*we dont care for actiavate_right_counter value here , since it has to take the fist possible path it gets in right as per left_follow*/
             }
-            while ( (lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 )) ;
+            while ( (lsa_reading[1] == 0) && ( lsa_reading[2] == 0) && ( lsa_reading[3] == 0) ) ;
         } 
-        else
+        else if (lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[2] == 0 && lsa_reading[3] == 0 && lsa_reading[4] == 0 )
         {
+            /*dead end*/
             circular_defn(-4) ;
-            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Increase PWM since we have to go straight 
-            set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
             do
             {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; //this will turn towards left
                 set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
-                if (lsa_reading[3] != prev_lsa3_counter)
-                    {
-                        actiavate_right_counter = actiavate_left_counter ; 
-                        prev_lsa1_counter = lsa_reading[3] ;
-                    }
             }
-            while (( lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 ) && actiavate_left_counter == 1) ;
-        }        
+            while (( lsa_reading[1] == 0) && ( lsa_reading[2] == 0 ) && ( lsa_reading[3] == 0 ) ) ;
+        }  
+        else if (is_end)
+        {
+            led_blink_at_end() ;
+        }
+
+        /*resets all the counters*/
+        actiavate_left_counter = 0 ;
+        actiavate_left_counter = 0 ;
+        straight_possible = 0 ;      
         
     }
     vTaskDelete(NULL);
 }
+//end of task
 
 void line_follow_task(void* arg)
 {
