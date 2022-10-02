@@ -16,7 +16,6 @@ the angles obtained from the encoders are then fed to confine_angle which allots
 
 #include <stdio.h>
 #include "mazeblaze2.h"
-#include "line_following.h"
 #include "tuning_http_server.h"
 
 #define GOOD_DUTY_CYCLE 67
@@ -30,8 +29,9 @@ int Turn ;
 float error=0, prev_error=0, difference, cumulative_error, correction; 
 float left_duty_cycle = 0, right_duty_cycle = 0;
 int prev_Turn ;
-int prev_lsa1_counter = 0 ; 
-int prev_lsa3_counter = 0 ; 
+int prev_lsa0_value = 0 ;  //left most sensor
+int prev_lsa2_value = 0 ; //middle sensor
+//we dont need a right sensor prev reading since we are using left follow
 bool straight_possible = false ;
 bool is_end ;
 
@@ -58,23 +58,20 @@ void turn_task(void *arg)
         get_raw_lsa() ;
 
         /* This part detects if there is a node and if there is , it reduces the speed to pwm 65 and works on counters*/
+
         if (lsa_reading[0] == 1) /*A path in left detected once */
         {
-            if (lsa_reading[1] != prev_lsa1_counter)
+            if (lsa_reading[0] != prev_lsa0_value) /*records change in values i.e. increments if there is any difference between 2 values*/
             {
                 actiavate_left_counter ++ ;
-                prev_lsa1_counter = lsa_reading[0] ;
+                prev_lsa0_value = lsa_reading[0] ;
             }
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Reduce pwm to 65 to slow down to bot 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
         }
         if (lsa_reading[4] == 1) /*A path in right detected first*/
         {
-            if (lsa_reading[3] != prev_lsa3_counter)
-            {
-                actiavate_right_counter ++ ;
-                prev_lsa1_counter = lsa_reading[3] ;
-            }
+            actiavate_right_counter ++ ;    //we dont care about the number of paths in right , since it has to get the fist right it sees
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Reduce pwm to 65 to slow down to bot 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
         }
@@ -88,20 +85,21 @@ void turn_task(void *arg)
         }
 
         /*This part of the code takes action on the basis of the node detected*/
-        if (actiavate_left_counter > 0 && lsa_reading[5] == 1)
+
+        if (actiavate_left_counter > 0 && lsa_reading[5] == 1)      //takes last left it sees
         {
             circular_defn(-2) ;     //for turning left , we do -2 
             do
             {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; //motor A_0 has to go forward and motor A_1 has to go backwards to take left 
                 set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
-                if (lsa_reading[3] != prev_lsa3_counter)
+                if (lsa_reading[2] != prev_lsa2_value)
                     {
-                        actiavate_right_counter = actiavate_left_counter ; 
-                        prev_lsa1_counter = lsa_reading[3] ;
+                        actiavate_left_counter -- ;     //decrement the counter and avoid the path since it not the leftmost path
+                        prev_lsa2_value = lsa_reading[2] ;
                     }
             }
-            while (( lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 ) && actiavate_left_counter == 1) ;
+            while (( lsa_reading[1] == 0) && ( lsa_reading[2] == 0 ) && ( lsa_reading[3] == 0 ) && actiavate_left_counter <= 2) ;
         }
         else if ( straight_possible )
         {
@@ -109,37 +107,37 @@ void turn_task(void *arg)
             set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 75) ;//Increase PWM since we have to go straight 
             set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 75) ;
         }
-        else if (actiavate_right_counter > 0 && lsa_reading[6] == 1)
+        else if (actiavate_right_counter > 0 && lsa_reading[6] == 1)    //takes first right it sees
         {
             circular_defn(+2) ;     //for turning right , we do +2 
             do
             {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;
+                set_motor_speed(MOTOR_A_0 , MOTOR_BACKWARD , 65) ;  //motor A_0 has to go backward and motor A_1 has to go forwards to take right 
+                set_motor_speed(MOTOR_A_1 , MOTOR_FORWARD , 65) ;
+                /*we dont care for actiavate_right_counter value here , since it has to take the fist possible path it gets in right as per left_follow*/
+            }
+            while ( (lsa_reading[1] == 0) && ( lsa_reading[2] == 0) && ( lsa_reading[3] == 0) ) ;
+        } 
+        else if (lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[2] == 0 && lsa_reading[3] == 0 && lsa_reading[4] == 0 )
+        {
+            /*dead end*/
+            circular_defn(-4) ;
+            do
+            {
+                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; //this will turn towards left
                 set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
             }
-            while ( (lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 )) ;
-        } 
-        else if(is_end)
+            while (( lsa_reading[1] == 0) && ( lsa_reading[2] == 0 ) && ( lsa_reading[3] == 0 ) ) ;
+        }  
+        else if (is_end)
         {
             led_blink_at_end() ;
         }
-        else
-        {
-            circular_defn(-4) ;
-            set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ;//Increase PWM since we have to go straight 
-            set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
-            do
-            {
-                set_motor_speed(MOTOR_A_0 , MOTOR_FORWARD , 65) ; 
-                set_motor_speed(MOTOR_A_1 , MOTOR_BACKWARD , 65) ;
-                if (lsa_reading[3] != prev_lsa3_counter)
-                    {
-                        actiavate_right_counter = actiavate_left_counter ; 
-                        prev_lsa1_counter = lsa_reading[3] ;
-                    }
-            }
-            while (( lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 ) && actiavate_left_counter == 1) ;
-        }        
+
+        /*resets all the counters*/
+        actiavate_left_counter = 0 ;
+        actiavate_left_counter = 0 ;
+        straight_possible = 0 ;      
         
     }
     vTaskDelete(NULL);
@@ -185,18 +183,18 @@ void app_main()
 
 /********************************Function Definations here**************************************/
 
-/*
-possible cases of errors :-
-1) All the front sensor read black
-2) if lsa_reading [1] != lsa_reading [2] != lsa_reading [3]
-
-error to right of line is positive while left of line is negative
-*/
 void calculate_error()
 {
-    if (lsa_reading[1] == 0 && lsa_reading[2] == 0 && lsa_reading[3] == 0 )
-    {
+    /*
+    possible cases of errors :-
+    1) All the front sensor read black - this means the bot is entirely out of path
+    2) if lsa_reading [1] != lsa_reading [2] != lsa_reading [3] != 1 - this means bot is slightly out of path
 
+    error to right of line is +ve while left of line is -ve
+    */
+    if (lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[2] == 0 && lsa_reading[3] == 0 && lsa_reading[4] == 0)
+    {
+        /*All sensore read black*/
         if(prev_error > 0) //we use prev_error to extract the sign to give to error
         {
             error = 2.5;    //arbitrary value
@@ -218,12 +216,12 @@ void calculate_error()
     }
     else if (lsa_reading[1] == 1000 && lsa_reading[2] == 1000 && lsa_reading[3] == 1000)
     {
-        /* no error */
+        /* no error since the bot is on line */
         error = 0 ;     //arbitrary value
     }
     else
     { 
-        error = prev_error ; //this case is for safety
+        error = 0 ; //this case is for safety
     }   
 }
 //end of function
@@ -359,7 +357,7 @@ void get_shortest_path()
 }
 //end of function
 
-void led_blink_at_end()
+void led_blink_at_end() /*The led is supposed to blink at the end of maze*/
 {
     set_motor_speed(MOTOR_A_0 , MOTOR_STOP , 60) ;
     set_motor_speed(MOTOR_A_0 , MOTOR_STOP , 60) ;
