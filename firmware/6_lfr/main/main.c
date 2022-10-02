@@ -1,7 +1,8 @@
 /*Understanding the flow of code :-
 Here we create two tasks , namely line follow task and turn task simultanously .
 The line follow task starts by getting the raw LSA values and then calculating the correction if any . Then it feeds this correction to motor by passing argument to set_motor_speed() . It also executes turning when a node is spotted .
-The front LSA is used to note that a path exists and the back sensors are used to detect when to take sharp turn */
+The front LSA is used to note that a path exists and the back sensors are used to detect when to take sharp turn 
+the angles obtained from the encoders are then fed to confine_angle which allots the correct angle to degree array */
 
 /*Dirction referance :-
 1 - W
@@ -32,6 +33,7 @@ int prev_Turn ;
 int prev_lsa1_counter = 0 ; 
 int prev_lsa3_counter = 0 ; 
 bool straight_possible = false ;
+bool is_end ;
 
 int dry_run[NO_OF_NODES] = {0} ;; //To be filled during dry run
 /* Dry_run will hold only 4 types of values , i.e. 1 for West , 3 for North , 5 for East , 7 for South */
@@ -47,6 +49,7 @@ void calculate_correction() ;
 void calculate_error() ;
 void confine_angle () ;
 void get_shortest_path() ;
+void led_blink_at_end() ;
 
 void turn_task(void *arg)
 {
@@ -78,6 +81,10 @@ void turn_task(void *arg)
         if( (actiavate_left_counter > 0 )&& (actiavate_right_counter > 0 )&& ( lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 )) /*straight does exsist even though left or right counter are incremented*/
         {
             straight_possible = true ;
+        }
+        if ((lsa_reading[0] == 1 ) && (lsa_reading[1] == 1 ) &&  (lsa_reading[2] == 1 ) &&  (lsa_reading[3] == 1 ) &&  lsa_reading[4] == 1 )  //when the entire array of IR's read white
+        {
+            is_end = true ;
         }
 
         /*This part of the code takes action on the basis of the node detected*/
@@ -112,6 +119,10 @@ void turn_task(void *arg)
             }
             while ( (lsa_reading[1] == 1) && ( lsa_reading[2] == 1 ) && ( lsa_reading[3] == 1 )) ;
         } 
+        else if(is_end)
+        {
+            led_blink_at_end() ;
+        }
         else
         {
             circular_defn(-4) ;
@@ -133,6 +144,7 @@ void turn_task(void *arg)
     }
     vTaskDelete(NULL);
 }
+//end of task
 
 void line_follow_task(void* arg)
 {
@@ -161,13 +173,15 @@ void line_follow_task(void* arg)
 
     vTaskDelete(NULL);
 }
+//end of task
 
 void app_main()
 {
-    xTaskCreate(&turn_task, "line_follow_task", 4096, NULL, 1, NULL);    //creating a task to start line following
+    xTaskCreate(&turn_task, "turn_task", 4096, NULL, 1, NULL);    //creating a task to start line following
     xTaskCreate(&line_follow_task, "line_follow_task", 4096, NULL, 1, NULL);    //creating a task to start line following
     start_tuning_http_server();    
 }
+//end of main
 
 /********************************Function Definations here**************************************/
 
@@ -212,6 +226,7 @@ void calculate_error()
         error = prev_error ; //this case is for safety
     }   
 }
+//end of function
 
 void calculate_correction()
 {
@@ -225,6 +240,7 @@ void calculate_correction()
 
     prev_error = error; //update error
 }
+//end of function
 
 void circular_defn(int change_in_dir)
 {
@@ -251,6 +267,7 @@ void circular_defn(int change_in_dir)
 
     dry_run[turn_index ++] = Turn ; //puts the new value of turn in dry_run and then increments the index 
 }
+//end of function
 
 float bound(float val, float min, float max) //To bound a certain value in range MAX to MIN 
 {
@@ -260,6 +277,7 @@ float bound(float val, float min, float max) //To bound a certain value in range
         val = min;
     return val;
 }
+//end of function
 
 void confine_angle ()
 //an error of 15 degrees can be tolerated
@@ -281,6 +299,7 @@ void confine_angle ()
         degree[degree_index ++ ] = 135 ;
     }
 }
+//end of function
 
 void get_shortest_path()
 {
@@ -338,3 +357,25 @@ void get_shortest_path()
         printf("%d " , final_run[i]) ;
     }*/
 }
+//end of function
+
+void led_blink_at_end()
+{
+    set_motor_speed(MOTOR_A_0 , MOTOR_STOP , 60) ;
+    set_motor_speed(MOTOR_A_0 , MOTOR_STOP , 60) ;
+
+    gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = (1ULL << END_LED);
+    io_conf.pull_down_en = 0;
+    io_conf.pull_up_en = 0;
+    gpio_config(&io_conf);
+
+    while(true)
+    {
+    gpio_set_level(END_LED, 1);
+    gpio_set_level(END_LED, 0);
+    }
+}
+//end of function
