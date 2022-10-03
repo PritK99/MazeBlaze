@@ -1,11 +1,5 @@
 #include "mazeblaze2.h"
 
-#define WHITE_PATCH 1000 // LSA values that > 1000 are white patch
-#define BLACK_PATCH 0    // LSA values that lie between 0 - 1000 are black patch
-#define no_of_sensors 6 // total number of sensors in bot
-
-int lsa_reading[no_of_sensors];
-
 // esp_err_t is an unsigned int given by esp for error handling . 0 denotes OK_ESP i.e. success
 esp_err_t enable_lsa()
 {
@@ -34,7 +28,8 @@ esp_err_t enable_lsa()
 }
 
 esp_err_t set_brightness(int val) {
-    /*The timer number runs from 0 to 2 only // mcpwn unit runs from 0 to 1 // */
+    /*The timer number runs from 0 to 2 only and mcpwn unit runs from 0 to 1 
+    timer 0 and timer 1 are used by motors*/
     mcpwm_set_duty(MCPWM_UNIT_1, MCPWM_TIMER_2, MCPWM_OPR_A, val);
     mcpwm_set_duty_type(MCPWM_UNIT_1, MCPWM_TIMER_2, MCPWM_OPR_A, MCPWM_DUTY_MODE_0);
     mcpwm_set_duty(MCPWM_UNIT_1, MCPWM_TIMER_2, MCPWM_OPR_B, 0);
@@ -45,24 +40,26 @@ esp_err_t set_brightness(int val) {
 
 int get_raw_lsa() // gets raw readings in range of 400 - 2000 appx
 {
+    //while (1) infinite loop should not be insterted here , since then it wont allow other functions to run 
     lsa_reading[0] = adc1_get_raw(ADC1_CHANNEL_0);
     lsa_reading[1] = adc1_get_raw(ADC1_CHANNEL_3);
     lsa_reading[2] = adc1_get_raw(ADC1_CHANNEL_6);
     lsa_reading[3] = adc1_get_raw(ADC1_CHANNEL_7);
     lsa_reading[4] = adc1_get_raw(ADC1_CHANNEL_4);
     lsa_reading[5] = adc1_get_raw(ADC1_CHANNEL_5);
-
-    // for (int i = 0; i < no_of_sensors; i++)
-    // {
-    //     if (lsa_reading[i] > 1000)
-    //     {
-    //         lsa_reading[i] = WHITE_PATCH;
-    //     }
-    //     else
-    //     {
-    //         lsa_reading[i] = BLACK_PATCH;
-    //     }
-    // }
+    lsa_reading[6] = 0 ;
+    
+    for (int i = 0; i < no_of_sensors; i++)
+    {
+        if (lsa_reading[i] > 1000)
+        {
+            lsa_reading[i] = WHITE_PATCH;
+        }
+        else
+        {
+            lsa_reading[i] = BLACK_PATCH;
+        }
+    }
 
     for (int i = 0; i < no_of_sensors; i++)
     {
