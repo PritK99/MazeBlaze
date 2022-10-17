@@ -11,12 +11,12 @@
 #define TAG "app"
 
 /*right-most motor*/
-#define ROT_ENC_A_GPIO 4
-#define ROT_ENC_B_GPIO 16
+#define ROT_ENC_A_GPIO 5
+#define ROT_ENC_B_GPIO 17
 
 /*left-most motor*/
-#define ROT_ENC_C_GPIO 5
-#define ROT_ENC_D_GPIO 17
+#define ROT_ENC_C_GPIO 4
+#define ROT_ENC_D_GPIO 16
 
 #define ENABLE_HALF_STEPS false // Set to true to enable tracking of rotary encoder at half step resolution
 #define RESET_AT 0              // Set to a positive non-zero number to reset the position if this value is exceeded
@@ -59,15 +59,16 @@ void app_main()
         // This portion will wait for 1000 ms for the task to come and if it does not , will go to else portion
         if (xQueueReceive(event_queue1, &event1, 100/ portTICK_PERIOD_MS))
         {
-            ESP_LOGI(TAG, "Event1 : position %d, direction %s", event1.state.position,
+            ESP_LOGI(TAG, "Left Motor reads : Distance %lf, Direction %s", 0.0575 * (float)event1.state.position ,
                      event1.state.direction ? (event1.state.direction == ROTARY_ENCODER_DIRECTION_CLOCKWISE ? "CW" : "CCW") : "NOT_SET");
+            printf("\n") ;
         }
         if (xQueueReceive(event_queue2, &event2, 100 / portTICK_PERIOD_MS))
         {
-            ESP_LOGI(TAG, "Event2 : position %d, direction %s", event2.state.position,
+            ESP_LOGI(TAG, "Right Motor reads : Distance %lf, Direction %s", 0.0575 * (float)event2.state.position,
                      event2.state.direction ? (event2.state.direction == ROTARY_ENCODER_DIRECTION_CLOCKWISE ? "CW" : "CCW") : "NOT_SET");
+            printf("\n") ;
         }
-        printf("I am Idle\n");
     }
     ESP_LOGE(TAG, "queue receive failed");
 
