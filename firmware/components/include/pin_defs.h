@@ -24,12 +24,7 @@
 
 #define DEBUG_SWITCH 13
 
-#define LSA_D0 32
-#define LSA_D1 35
-#define LSA_D2 34
-#define LSA_D3 39
-#define LSA_D4 36
-#define LSA_D5 33
+
 
 /////// motor driver ////////
 //****** normal mode ******//
@@ -40,6 +35,6 @@
 #define MDA_NORMAL_IN_5 27 //MCPWM_UNIT_1 MCPWM2A bin1
 #define MDA_NORMAL_IN_6 14 //MCPWM_UNIT_1 MCPWM2B bin2
 
-#define MOSFET_PWM 18
+
 
 #endif

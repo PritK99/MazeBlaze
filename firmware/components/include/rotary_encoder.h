@@ -14,6 +14,9 @@
 #include "esp_err.h"
 #include "driver/gpio.h"
 
+void get_degree();
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -131,8 +134,6 @@ esp_err_t rotary_encoder_get_state(const rotary_encoder_info_t * info, rotary_en
  * @return ESP_OK if successful, ESP_FAIL or ESP_ERR_* if an error occurred.
  */
 esp_err_t rotary_encoder_reset(rotary_encoder_info_t * info);
-
-void get_degree(); 
 
 
 #ifdef __cplusplus

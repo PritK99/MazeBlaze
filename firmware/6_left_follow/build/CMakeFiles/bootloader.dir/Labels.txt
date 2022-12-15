@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/CMakeFiles/bootloader
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/CMakeFiles/bootloader.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/CMakeFiles/bootloader-complete.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/prit/MazeBlaze-v2.1/firmware/6_lfr/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
