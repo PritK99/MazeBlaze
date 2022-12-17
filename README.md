@@ -13,7 +13,8 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 - Learn to design PCB and understand the design of PCB used in MazeBlaze bot
 - Understand and improvise electronic components used in MazeBlaze bot
 - Testing Line-sensor-array, motor drivers and interfacing encoders.
-- Impleting
+- Implementing left follow rule 
+- Implementing path plannig
 
 
 ## File Structure
