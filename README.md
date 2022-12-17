@@ -1,5 +1,18 @@
 # MazeBlaze-v2.1
 
+## Table of Contents
+
+- [Project](#MazeBlaze-v2)
+  - [Table of Contents](#table-of-contents)
+  - [About The Project](#about-the-project)
+  - [Demo](#demo)
+  - [File Structure](#file-structure)
+  - [Future Work](#future-work)
+  - [Contributors](#contributors)
+  - [Acknowledgements and Resources](#acknowledgements-and-references)
+  - [License](#license)
+  - [Citation](#citation)
+  
 ## About
 
 In this project, we will be working on Improvising MazeBlaze bot and Implement a maze solving algorithm on the MazeBlaze bot. The Main aim is to design an algorithm , which will enable us to map the entire maze and hence give us the shortest path. Further , we have improvised the design by understanding the current electronics and t 
