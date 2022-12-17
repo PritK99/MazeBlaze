@@ -25,4 +25,6 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
    
  ```
 
+<img src="https://img.icons8.com/color/48/null/c-programming.png"/>
+
 
