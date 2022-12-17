@@ -11,7 +11,6 @@
   - [Contributors](#contributors)
   - [Acknowledgements and Resources](#acknowledgements-and-references)
   - [License](#license)
-  - [Citation](#citation)
   
 ## About
 
@@ -51,6 +50,22 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
      ┣ 📄CMakeList.txt
      
 ``` 
-   
+## Future Work
+
+- [ ] Implementing better algorithms for Maze solving such as DFS, BFS, Djikstra's algorithm etc. on the bot
+- [ ] Improve on the design and model of mazzblaze
+- [ ] Achive higher speeds by increasing the efficiency of bot
+
+## Contributors
+* [Prit Kanadiya](https://github.com/PritK99))
+* [Raj Gupta](https://github.com/RajGupta17)
+
+
+## Acknowledgements and References
+* [SRA VJTI](http://sra.vjti.info/) Eklavya 2022  
+* [MazeBlaze-v1](https://github.com/ChinmayLonkar/MAZEBLAZE.git) Github repository of MazeBlaze-v1
+ 
+## License
+[MIT License](https://opensource.org/licenses/MIT)
 
 
