@@ -9,3 +9,6 @@ The end goal of our project is to form a line-following, Maze-solving bot , whic
 ## Domains Explored
 Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
+## Project Workflow 
+
+
