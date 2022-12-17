@@ -11,4 +11,16 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
 ## Project Workflow 
 
+### File Structure
+```
+👨‍💻MazeBlaze-v2.1
+ ┣ 📂assets                             # Installation.md & all reference gifs, images
+ ┣ 📂firmware                           # Code files 
+   ┣ 📂0_lsa
+   ┃ ┣ 📂main                         
+   ┃ ┃ ┗ 📄main.c                        # Contains code for getting readings from LSA 
+   ┣ 📂1_                
+   
+ ```
+
 
