@@ -10,8 +10,13 @@ The end goal of our project is to form a line-following, Maze-solving bot , whic
 Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
 ## Project Workflow 
+- Learn to design PCB and understand the design of PCB used in MazeBlaze bot
+- Understand and improvise electronic components used in MazeBlaze bot
+- Testing Line-sensor-array, motor drivers and interfacing encoders.
+- Impleting
 
-### File Structure
+
+## File Structure
 ```
 👨‍💻MazeBlaze-v2.1
  ┣ 📂assets                            // Installation.md & all reference gifs, images
