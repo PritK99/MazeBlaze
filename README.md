@@ -19,7 +19,7 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
    ┣ 📂0_lsa
    ┃ ┣ 📂main                         
    ┃ ┃ ┗ 📄main.c                        # Contains code for getting readings from LSA 
-   ┣ 📂1_   <img src="https://img.icons8.com/color/48/null/c-programming.png"/>
+   ┣ 📂1_   <img src="https://img.icons8.com/color/48/null/c-programming.png">
 
             
    
