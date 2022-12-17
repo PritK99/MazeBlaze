@@ -14,17 +14,24 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 ### File Structure
 ```
 👨‍💻MazeBlaze-v2.1
- ┣ 📂assets                             # Installation.md & all reference gifs, images
- ┣ 📂firmware                           # Code files 
-   ┣ 📂0_lsa
+ ┣ 📂assets                            // Installation.md & all reference gifs, images
+ ┣ 📂firmware                          // Code files 
+   ┣ 📂1_lsa                           // Contains code for getting readings from LSA 
    ┃ ┣ 📂main                         
-   ┃ ┃ ┗ 📄main.c                        # Contains code for getting readings from LSA 
-   ┣ 📂1_   <img src="https://img.icons8.com/color/48/null/c-programming.png">
-
-            
+   ┃ ┃ ┗ 📄main.c 
+   ┃ ┃ ┣ 📄CMakeList.txt
+   ┃ ┣ 📄CMakeList.txt
+   ┣ 📂3_encoders                      // Contains code for interfacing encoders 
+   ┣ 📂4_line_following                // Contains code for line following
+   ┣ 📂5_left_follow                   // Contains code for left-follow-rule
+   ┣ 📂6_path_planning                 // Contains code for path planning
+  ┣ 📂Components                       // Contains all the header and source files used in project
+     ┣ 📂include                       
+     ┣ 📂src 
+     ┣ 📂esp-wifi-logger
+     ┣ 📄CMakeList.txt
+     
+``` 
    
- ```
-
-<img src="https://img.icons8.com/color/48/null/c-programming.png"/>
 
 
