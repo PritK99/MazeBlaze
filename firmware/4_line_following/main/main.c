@@ -1,32 +1,11 @@
 #include "mazeblaze2.h"
-/*This method involves tuning kp , ki ,kd physically*/
+/*This method involves tuning kp , ki ,kd physically and building the code again*/
 #define GOOD_DUTY_CYCLE 68
 #define MIN_DUTY_CYCLE 55
 #define MAX_DUTY_CYCLE 85
-#define NO_OF_NODES 150
 
-int actiavate_left_counter =0;
-int actiavate_right_counter =0;
-int Turn ;
 float error=0, prev_error=0, difference, cumulative_error, correction; 
 float left_duty_cycle = 0, right_duty_cycle = 0;
-int prev_Turn ;
-int prev_lsa0_value = 0 ;  //left most sensor
-int prev_lsa2_value = 0 ; //middle sensor
-//we dont need a right sensor prev reading since we are using left follow
-bool straight_possible = false ;
-bool is_end = false ;
-int total_angle = 0;
-
-int dry_run[NO_OF_NODES] = {0} ;; //To be filled during dry run
-/* Dry_run will hold only 4 types of values , i.e. 1 for West , 3 for North , 5 for East , 7 for South */
-int final_run[NO_OF_NODES] = {3 , 0}; //after removing redundant values from dry run and the first value is hardcoded as 3 since it north as start always
-int degree[NO_OF_NODES] = {0} ; //This contains angles taken at node . hardcoding the first degree as 0 , since it is always going to be in line 
-int degree_index = 1 ; //This contains index for degree array
-int turn_index = 0 ;   //This contains index for turns taken
-int angle ;
-int final_run_index = 1 ; //final_run[0] is already 3 which stands for north 
-int prev_in_final_run;
 
 void calculate_correction();
 void calculate_error() ;
