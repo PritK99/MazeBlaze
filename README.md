@@ -32,6 +32,7 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
 ![IMG_0547_MOV_AdobeExpress](https://user-images.githubusercontent.com/103832825/208279682-8080600f-02c1-42f0-adbb-0c0c7c0d9037.gif)
 ![IMG_0547_MOV_AdobeExpress (1)](https://user-images.githubusercontent.com/103832825/208279743-dc0dcc3d-3c4c-4085-9829-36e9da6aa16b.gif)
+![IMG_0547_MOV_AdobeExpress (2)](https://user-images.githubusercontent.com/103832825/208279791-952ea517-1a3f-4801-9d72-7b21b3b89bb6.gif)
 
 ## File Structure
 ```
