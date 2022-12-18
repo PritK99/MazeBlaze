@@ -18,10 +18,10 @@ In this project, we will be working on Improvising MazeBlaze bot and Implement a
 
 The end goal of our project is to form a line-following, Maze-solving bot , which can find the shortest path in the given maze.
 
-## Domains Explored
+  ### Domains Explored
 Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
-## Project Workflow 
+  ### Project Workflow 
 - Learn to design PCB and understand the design of PCB used in MazeBlaze bot
 - Understand and improvise electronic components used in MazeBlaze bot
 - Testing Line-sensor-array, motor drivers and interfacing encoders.
