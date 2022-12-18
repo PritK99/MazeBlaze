@@ -28,6 +28,9 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 - Implementing left follow rule 
 - Implementing path plannig
 
+## Demo
+
+![IMG_0547_MOV_AdobeExpress](https://user-images.githubusercontent.com/103832825/208279682-8080600f-02c1-42f0-adbb-0c0c7c0d9037.gif)
 
 ## File Structure
 ```
