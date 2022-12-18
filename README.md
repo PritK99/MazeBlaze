@@ -7,7 +7,7 @@
   - [About The Project](#about-the-project)
   - [Demo](#demo)
   - [File Structure](#file-structure)
-  - [Getting started](#Getting Started)
+  - [Getting started](#Getting-Started)
   - [Future Work](#future-work)
   - [Contributors](#contributors)
   - [Acknowledgements and Resources](#acknowledgements-and-references)
