@@ -57,9 +57,9 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 - [ ] Achive higher speeds by increasing the efficiency of bot
 
 ## Contributors
-* [Prit Kanadiya](https://github.com/PritK99)
-* [Raj Gupta](https://github.com/RajGupta17)
 
+* [Raj Gupta](https://github.com/RajGupta17)
+* [Prit Kanadiya](https://github.com/PritK99)
 
 ## Acknowledgements and References
 * [SRA VJTI](https://sravjti.in/) Eklavya 2022  
