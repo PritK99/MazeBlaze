@@ -83,6 +83,7 @@ Once the requirements are satisfied, you can easily download the project and use
 After following the above steps , use the following commands to:
 
 To activate the IDF
+
 ```
 get_idf
 ``
