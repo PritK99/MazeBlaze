@@ -86,7 +86,7 @@ To activate the IDF
 
 ```
 get_idf
-``
+```
 
 To build the code 
 
