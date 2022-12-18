@@ -62,7 +62,8 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 
 
 ## Acknowledgements and References
-* [SRA VJTI](http://sra.vjti.info/) Eklavya 2022  
+* [SRA VJTI](https://sravjti.in/) Eklavya 2022  
+* Special thanks to our mentors [Chinmay Lonkar](https://github.com/ChinmayLonkar), [Marck Koothoor](https://github.com/marck3131), [Mateen Shah](https://github.com/Jamm02) and all the seniors at SRA, VJTI for their constant support and guidance throughout the project.
 * [MazeBlaze-v1](https://github.com/ChinmayLonkar/MAZEBLAZE.git) Github repository of MazeBlaze-v1
  
 ## License
