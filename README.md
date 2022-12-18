@@ -7,6 +7,7 @@
   - [About The Project](#about-the-project)
   - [Demo](#demo)
   - [File Structure](#file-structure)
+  - Getting started
   - [Future Work](#future-work)
   - [Contributors](#contributors)
   - [Acknowledgements and Resources](#acknowledgements-and-references)
@@ -54,6 +55,50 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
      ┣ 📄CMakeList.txt
      
 ``` 
+## Getting Started
+
+### Prerequisites
+To download and use this code, the minimum requirements are:
+
+* [ESP_IDF](https://github.com/espressif/esp-idf)
+* Windows 7 or later (64-bit), Ubuntu 20.04 or later
+* [Microsoft VS Code](https://code.visualstudio.com/download) or any other IDE 
+
+### Installation
+
+Clone the project by typing the following command in your Terminal/CommandPrompt
+
+```
+git clone https://github.com/PritK99/MazeBlaze-v2.1.git 
+```
+Navigate to the MazeBlaze-v2.1 folder
+
+```
+cd MazeBlaze-v2.1
+```
+
+### Usage
+
+Once the requirements are satisfied, you can easily download the project and use it on your machine.
+After following the above steps , use the following commands to:
+
+To activate the IDF
+```
+get_idf
+``
+
+To build the code 
+
+```
+idf.py build
+```
+
+To flash the code
+
+```
+idf.py -p (PORT) flash monitor
+```
+
 ## Future Work
 
 - [ ] Implementing better algorithms for Maze solving such as DFS, BFS, Djikstra's algorithm etc. on the bot
