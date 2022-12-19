@@ -4,3 +4,4 @@ set(EXTRA_COMPONENT_DIRS ../components/ $ENV{IDF_PATH}/examples/common_component
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(5_left_follow)
+

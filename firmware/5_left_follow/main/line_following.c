@@ -6,20 +6,18 @@
 int pindex = 1;
 #define NO_OF_NODES 100
 int dry_run[NO_OF_NODES] = {1, 0}; // To be filled during dry run
-int final_run[NO_OF_NODES] = {0};  // after removing redundant values from dry run
+int final_run[NO_OF_NODES] = {0};                                // after removing redundant values from dry run
+int final_traversal = 1;
 
 float error = 0, prev_error = 0, difference, cumulative_error, correction;
 float left_duty_cycle = 0, right_duty_cycle = 0;
 
-float kp = 50, ki = 0.01 , kd = 60;
+float kp = 35, ki = 0.01, kd = 60;
 
 const int weights[5] = {3, 1, 0, -1, -3};
 
 TaskHandle_t taskhandle1 = NULL;
 TaskHandle_t taskhandle2 = NULL;
-TaskHandle_t taskhandle3 = NULL;
-
-#define BOOT_BUTTON 0
 
 // MOTOR A0 ---> Right
 // MOTOR A1 ---> Left
@@ -29,62 +27,9 @@ TaskHandle_t taskhandle3 = NULL;
 #define MIN_DUTY_CYCLE 50
 #define MAX_DUTY_CYCLE 85
 /*variables which help to decide which turns to take*/
-void simplify_path()
-{
-    int prev_index = 0;
-    int prev_value = dry_run[prev_index];
 
-    for (int i = 0; i < NO_OF_NODES; i++)
-        if (i == 0) // there is no value to compare yet
-        {
-            continue;
-        }
-        else if (dry_run[i] == 0) // 0 refers to the unfilled cells or the cells with redundancy removed
-        {
-            continue;
-        }
-        /*path is redundant or not depends upon whether there is a dead end or not i.e. the difference between two consecutive values in dry_run have difference of 4 , but also if the angle accounts to 180 degree */
-        else if (fabs(prev_value - dry_run[i]) == 2)
-        {
-            dry_run[i] = 0;
-            dry_run[prev_index] = 0; // we shift our previous index one behind after making the element as 0
-            if (prev_index != 0)     // if redundant values are spotted in first two values itself
-            {
-                prev_index--;
-            }
-            prev_value = dry_run[prev_index]; // we get the previous value as per the previous index since it is already shifted
-        }
-        else // This condition means no redundant path was discovered hence we increment the prev_index
-        {
-            prev_value = dry_run[i];
-            do /*this is because prev_index is incremented till it overcomes all the redundant 0's it had created */
-            {
-                prev_index++;
-            } while (dry_run[prev_index] == 0);
-        }
-
-    int length_of_path = 0; // j is the index counter for final run
-
-    for (int i = 0; i < NO_OF_NODES; i++)
-    {
-        if (dry_run[i] == 0) // all 0's are redundant and hence are not included in node
-        {
-            continue;
-        }
-        else
-        {
-            final_run[length_of_path] = dry_run[i];
-            length_of_path++;
-        }
-    }
-
-    // printing the balues to confirm readings
-    printf("Simplified path : ");
-    for (int i = 0; i < length_of_path; i++)
-    {
-        printf("%d ", final_run[i]);
-    }
-}
+// all booleans
+bool only_left = false, left = false, right = false, only_right = false, ll = false, rr = false;
 
 void calculate_error()
 {
@@ -149,8 +94,260 @@ float bound(float val, float min, float max) // To bound a certain value in rang
 }
 // end of function
 
-// all booleans
-bool only_left = false, left = false, right = false, only_right = false, ll = false;
+void left_turn()
+{
+    // printf("left called successfully\n");
+    while (1)
+    {
+        get_raw_lsa();
+
+        if (lsa_reading[1] == 0)
+        {
+            ll = true;
+        }
+
+        set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, 75);
+        set_motor_speed(MOTOR_A_1, MOTOR_BACKWARD, 75);
+
+        if (lsa_reading[1] == 1000 && lsa_reading[2] == 1000 && ll)
+        {
+            vTaskDelay(40 / portTICK_PERIOD_MS);
+            set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
+            set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
+            ll = 0;
+            left = 0;
+            only_left = 0;
+            only_right = 0;
+            right = 0;
+            break;
+        }
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+}
+
+void right_turn()
+{
+    // printf("right called successfully\n");
+    while (1)
+    {
+        get_raw_lsa();
+
+        if (lsa_reading[3] == 0)
+        {
+            rr = true;
+        }
+
+        set_motor_speed(MOTOR_A_0, MOTOR_BACKWARD, 75);
+        set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, 75);
+
+        if (lsa_reading[2] == 1000 && lsa_reading[3] == 1000 && rr)
+        {
+            vTaskDelay(40 / portTICK_PERIOD_MS);
+            set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
+            set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
+            ll = 0;
+            rr = 0;
+            left = 0;
+            only_left = 0;
+            only_right = 0;
+            right = 0;
+            break;
+        }
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+}
+
+void simplify_path()
+{
+    printf("labababab");
+    int prev_index = 0;
+    int prev_value = dry_run[prev_index];
+
+    for (int i = 0; i < NO_OF_NODES; i++)
+        if (i == 0) // there is no value to compare yet
+        {
+            continue;
+        }
+        else if (dry_run[i] == 0) // 0 refers to the unfilled cells or the cells with redundancy removed
+        {
+            continue;
+        }
+        /*path is redundant or not depends upon whether there is a dead end or not i.e. the difference between two consecutive values in dry_run have difference of 4 , but also if the angle accounts to 180 degree */
+        else if (fabs(prev_value - dry_run[i]) == 2)
+        {
+            dry_run[i] = 0;
+            dry_run[prev_index] = 0; // we shift our previous index one behind after making the element as 0
+            if (prev_index != 0)     // if redundant values are spotted in first two values itself
+            {
+                prev_index--;
+            }
+            prev_value = dry_run[prev_index]; // we get the previous value as per the previous index since it is already shifted
+        }
+        else // This condition means no redundant path was discovered hence we increment the prev_index
+        {
+            prev_value = dry_run[i];
+            do /*this is because prev_index is incremented till it overcomes all the redundant 0's it had created */
+            {
+                prev_index++;
+            } while (dry_run[prev_index] == 0);
+        }
+
+    int length_of_path = 0; // j is the index counter for final run
+
+    for (int i = 0; i < NO_OF_NODES; i++)
+    {
+        if (dry_run[i] == 0) // all 0's are redundant and hence are not included in node
+        {
+            continue;
+        }
+        else
+        {
+            final_run[length_of_path] = dry_run[i];
+            length_of_path++;
+        }
+    }
+
+    // printing the balues to confirm readings
+    // printf("Simplified path : ");
+    // for (int i = 0; i < length_of_path; i++)
+    // {
+    //     printf("%d ", final_run[i]);
+    // }
+}
+
+void path_follow_task(void *arg)
+{
+    ESP_LOGI("debug","Inside path follow task");
+
+    simplify_path();
+    vTaskDelay(1000/portTICK_PERIOD_MS);
+
+    while (1)
+    {
+        get_raw_lsa();
+
+        if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
+        {
+            left = 1;
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            get_raw_lsa(); // funtion that updates the lsa readings
+            if (left == 1 || right == 1)
+            {
+                if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
+                {
+                    left = 1;
+                    right = 0;
+                }
+                else if (lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
+                {
+                    right = 1;
+                    left = 0;
+                }
+                else
+                {
+                    left = 0;
+                    right = 0;
+                }
+            }
+        }
+        else if (lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
+        {
+            right = true;
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            get_raw_lsa(); // funtion that updates the lsa readings
+            if (left == 1 || right == 1)
+            {
+                if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
+                {
+                    left = 1;
+                    right = 0;
+                }
+                else if (lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
+                {
+                    right = 1;
+                    left = 0;
+                }
+                else
+                {
+                    left = 0;
+                    right = 0;
+                }
+            }
+        }
+
+        if (left == 1 || right == 1)
+        {
+            if (final_run[final_traversal] == 0)
+            {
+                while (1)
+                {
+                    get_raw_lsa();
+
+                    set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
+                    set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
+
+                    vTaskDelay(10 / portTICK_PERIOD_MS);
+                }
+            }
+            // else if (lsa_reading[0] == 0 && lsa_reading[4] == 0 && ((lsa_reading[2] == 1000) && (lsa_reading[1] == 1000 || lsa_reading[3] == 1000)))
+            // {
+            //     calculate_error();
+            //     calculate_correction();
+
+            //     left_duty_cycle = bound((GOOD_DUTY_CYCLE - correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+            //     right_duty_cycle = bound((GOOD_DUTY_CYCLE + correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+
+            //     set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, left_duty_cycle); /*goes forward in this case*/
+            //     set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, right_duty_cycle);
+            // }
+
+            // printf("Special turn detetcion squad\n") ;
+            else if ((final_run[final_traversal] - final_run[final_traversal - 1] == -1) || (final_run[final_traversal] - final_run[final_traversal - 1] == 3)) // for left
+            {
+                printf("left lele\n") ;
+                left_turn();
+                final_traversal++;
+                vTaskDelay(40/portTICK_PERIOD_MS);
+            }
+            else if ((final_run[final_traversal] - final_run[final_traversal - 1] == 1) || (final_run[final_traversal] - final_run[final_traversal - 1] == -3)) // for right
+            {
+                printf("right lele\n");
+                right_turn();
+                final_traversal++;
+                vTaskDelay(40/portTICK_PERIOD_MS);
+            }
+            else if (final_run[final_traversal] - final_run[final_traversal - 1] == 0) // for straight and str+right case
+            {
+                printf("straightlele\n") ;
+                calculate_error();
+                calculate_correction();
+
+                left_duty_cycle = bound((GOOD_DUTY_CYCLE - correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+                right_duty_cycle = bound((GOOD_DUTY_CYCLE + correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+
+                set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, left_duty_cycle); /*goes forward in this case*/
+                set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, right_duty_cycle);
+
+                vTaskDelay(40 / portTICK_PERIOD_MS);
+
+                final_traversal++;
+            }
+
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+        }
+
+        calculate_error();
+        calculate_correction();
+
+        left_duty_cycle = bound((GOOD_DUTY_CYCLE - correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+        right_duty_cycle = bound((GOOD_DUTY_CYCLE + correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
+
+        set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, left_duty_cycle); /*goes forward in this case*/
+        set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, right_duty_cycle);
+
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+}
 
 void line_follow_task(void *arg)
 {
@@ -162,7 +359,7 @@ void line_follow_task(void *arg)
         if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
         {
             left = 1;
-            vTaskDelay(20 / portTICK_PERIOD_MS);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
             get_raw_lsa(); // funtion that updates the lsa readings
             if (left == 1 || right == 1)
             {
@@ -186,7 +383,7 @@ void line_follow_task(void *arg)
         else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
         {
             right = true;
-            vTaskDelay(20 / portTICK_PERIOD_MS);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
             get_raw_lsa(); // funtion that updates the lsa readings
             if (left == 1 || right == 1)
             {
@@ -210,15 +407,6 @@ void line_follow_task(void *arg)
 
         if (left == 1) // checks left first
         {
-            // if (lsa_reading[0] == 0 && lsa_reading[1] == 1000 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-            // {
-            //     while(lsa_reading[0] == 0 && lsa_reading[1] == 1000 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-            //     {
-            //         get_raw_lsa() ;
-            //         set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
-            //         set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
-            //     }
-            // }
             int counter = 0;
             while (lsa_reading[0] == 1000 && lsa_reading[1] == 1000)
             {
@@ -226,17 +414,21 @@ void line_follow_task(void *arg)
                 vTaskDelay(10 / portTICK_PERIOD_MS);
                 counter++;
                 // printf("%d\n", counter);
-                if (counter >= 15 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[1] == 1000)
+                if (counter >= 17 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[1] == 1000)
                 {
-                    while (1)
+                    for (int i = 0 ; i < 1000 ; i++ )
                     {
                         set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
                         set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
                         vTaskDelay(10 / portTICK_PERIOD_MS);
                     }
+                    
+                    printf("hi new task");
+                    xTaskCreate(&path_follow_task, "path_follow_task", 4096, NULL, 1, &taskhandle2);
+                    vTaskSuspend(taskhandle1);
+ 
                 }
             }
-            // printf("\n");
 
             vTaskDelay(40 / portTICK_PERIOD_MS);
 
@@ -316,7 +508,7 @@ void line_follow_task(void *arg)
                 set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, 75);
                 set_motor_speed(MOTOR_A_1, MOTOR_BACKWARD, 75);
 
-                if (lsa_reading[1] == 1000 && ll)
+                if (lsa_reading[1] == 1000 && lsa_reading[2] == 1000 && ll)
                 {
                     // vTaskDelay(80 / portTICK_PERIOD_MS);
                     set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
@@ -406,8 +598,6 @@ void line_follow_task(void *arg)
                 set_motor_speed(MOTOR_A_0, MOTOR_BACKWARD, 75);
                 set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, 75);
 
-                // vTaskDelay(100 / portTICK_PERIOD_MS);
-
                 if (lsa_reading[2] == 1000)
                 {
                     set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
@@ -425,17 +615,6 @@ void line_follow_task(void *arg)
                 vTaskDelay(10 / portTICK_PERIOD_MS);
             }
         }
-        // // stop condition req
-        // if (lsa_reading[0] == 1000 && lsa_reading[1] == 1000 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-        // {
-        //     printf("ALL WHITE BOX DETECTED");
-        //     while (lsa_reading[0] == 1000 && lsa_reading[1] == 1000 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-        //     {
-        //         get_raw_lsa();
-        //         set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
-        //         set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
-        //     }
-        // }
 
         calculate_error();
         calculate_correction();
@@ -458,125 +637,10 @@ void line_follow_task(void *arg)
     }
 }
 
-void path_follow_task(void *arg)
-{
-    printf("oompalompa begins here");
-
-    int final_traversal = 1;
-    simplify_path();
-    while (1)
-    {
-
-        if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
-        {
-            left = 1;
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            get_raw_lsa(); // funtion that updates the lsa readings
-            if (left == 1 || right == 1)
-            {
-                if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
-                {
-                    left = 1;
-                }
-                else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-                {
-                    right = 1;
-                }
-                else
-                {
-                    left = 0;
-                    right = 0;
-                }
-            }
-        }
-        else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-        {
-            right = true;
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            get_raw_lsa(); // funtion that updates the lsa readings
-            if (left == 1 || right == 1)
-            {
-                if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
-                {
-                    left = 1;
-                }
-                else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
-                {
-                    right = 1;
-                }
-                else
-                {
-                    left = 0;
-                    right = 0;
-                }
-            }
-        }
-
-        if (left == 1 || right == 1)
-        {
-            if (final_run[final_traversal] - final_run[final_traversal - 1] == -1)
-            {
-            }
-        }
-
-        vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
-}
-
-void suspend_resume_tasks(void *arg)
-{
-    // Task used for suspending task 1 and task 2 when boot button is pressed . Has Higher priority than both of these .
-
-    static bool switcher = 1; // switcher variable used to switch between resume and suspend functions
-    bool once1 = 1;
-    while (1)
-    {
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-
-        bool boot_button_state = gpio_get_level((gpio_num_t)BOOT_BUTTON); // Gets the state of the boot button . If it is pressed gpio pin becomes low level.
-
-        if (!boot_button_state && switcher && once1)
-        { // if tasks are to be suspended
-
-            printf("Boot Button was pressed . Bye World ! All Tasks are suspended \n");
-            vTaskSuspend(taskhandle1);
-            vTaskSuspend(taskhandle2);
-            set_motor_speed(MOTOR_A_0, MOTOR_STOP, 0);
-            set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
-            // Suspend Tasks
-            // Wait some time . To prevent immediately switching to resume
-            switcher = 0;
-            vTaskDelay(3000 / portTICK_PERIOD_MS);
-        }
-        boot_button_state = gpio_get_level((gpio_num_t)BOOT_BUTTON);
-        if (!boot_button_state && !switcher && once1)
-        { // if tasks are to be resumed
-
-            printf("Boot Button was pressed . Path planning task has been resumed only \n");
-
-            vTaskResume(taskhandle2); // Resume Tasks
-
-            printf("resumed");
-
-            vTaskDelay(3000 / portTICK_PERIOD_MS); // Wait some time . To prevent immediately switching to suspend
-            once1 = false;
-        }
-    }
-}
-
-// end of task
-bool once = true;
 void app_main()
 {
     ESP_ERROR_CHECK(enable_lsa());
     ESP_ERROR_CHECK(enable_motor_driver());
 
     xTaskCreate(&line_follow_task, "line_follow_task", 4096, NULL, 1, &taskhandle1);
-    xTaskCreate(&path_follow_task, "path_follow_task", 4096, NULL, 1, &taskhandle2);
-    if (once)
-    {
-        vTaskSuspend(taskhandle2);
-        once = false;
-    }
-    xTaskCreate(&suspend_resume_tasks, "SRTASK", 2048, NULL, 4, &taskhandle3);
 }

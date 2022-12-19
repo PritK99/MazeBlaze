@@ -9,6 +9,4 @@ float bound(float val, float min, float max) ;//To bound a certain value in rang
 void calculate_error() ;
 void calculate_correction() ;
 void line_follow_task(void* arg) ;
-int circular_defn(int change_in_dir) ;
-
 #endif

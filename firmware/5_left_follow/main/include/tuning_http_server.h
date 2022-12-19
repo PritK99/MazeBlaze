@@ -18,8 +18,9 @@
 #include "esp_vfs.h"
 #include "cJSON.h"
 #include "sdkconfig.h"
+#include "wifi_handler.h"
 
-#define MDNS_INSTANCE "mazeblaze pid tuning web server"
+#define MDNS_INSTANCE "walle pid tuning web server"
 #define MDNS_HOST_NAME CONFIG_MDNS_HOST_NAME
 #define WEB_MOUNT_POINT "/www"
 #define FILE_PATH_MAX (ESP_VFS_PATH_MAX + 128)
@@ -31,9 +32,11 @@ typedef struct pid_const
     float kp;
     float ki;
     float kd;
+    bool val_changed;
 } pid_const_t;
 
 pid_const_t read_pid_const();
+void reset_val_changed_pid_const();
 void start_tuning_http_server();
 
 #endif
