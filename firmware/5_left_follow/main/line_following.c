@@ -207,12 +207,12 @@ void simplify_path()
         }
     }
 
-    // printing the balues to confirm readings
-    // printf("Simplified path : ");
-    // for (int i = 0; i < length_of_path; i++)
-    // {
-    //     printf("%d ", final_run[i]);
-    // }
+    // printing the values to confirm readings
+    printf("Simplified path : ");
+    for (int i = 0; i < length_of_path; i++)
+    {
+        printf("%d ", final_run[i]);
+    }
 }
 
 void path_follow_task(void *arg)
@@ -478,6 +478,7 @@ void line_follow_task(void *arg)
         if (left == 1)
         {
             // For taking left we always subtract 1
+            printf("DRY left\n") ;
             if (dry_run[pindex - 1] == 1)
             {
                 dry_run[pindex] = 4;
@@ -527,6 +528,9 @@ void line_follow_task(void *arg)
         // This is the condition for dead end and no right and left
         else if ((right == 0) && (left == 0) && lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[3] == 0 && lsa_reading[2] == 0 && lsa_reading[4] == 0)
         {
+            
+            printf("DRY U-turn\n") ;
+            printf("%d %d %d %d %d\n", lsa_reading[0], lsa_reading[1], lsa_reading[2], lsa_reading[3], lsa_reading[4]);
             // For taking dead_end we subtract 2
             if (dry_run[pindex - 1] == 1)
             {
@@ -572,7 +576,7 @@ void line_follow_task(void *arg)
         }
         else if (only_right == 1 && right == 1)
         {
-            // For taking dead_end we add 1
+            printf("DRY right\n") ;
             if (dry_run[pindex - 1] == 1)
             {
                 dry_run[pindex] = 2;
