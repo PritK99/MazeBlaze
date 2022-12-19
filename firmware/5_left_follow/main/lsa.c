@@ -26,7 +26,7 @@ int get_raw_lsa() // gets raw readings in range of 400 - 2000 appx
 
     for (int i = 0; i < no_of_sensors; i++)
     {
-        if (lsa_reading[i] > 3700)
+        if (lsa_reading[i] > 3675)
         {
             lsa_reading[i] = BLACK_PATCH;
         }

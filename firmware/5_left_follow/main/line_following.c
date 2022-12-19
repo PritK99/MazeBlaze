@@ -159,7 +159,6 @@ void right_turn()
 
 void simplify_path()
 {
-    printf("labababab");
     int prev_index = 0;
     int prev_value = dry_run[prev_index];
 
@@ -289,36 +288,20 @@ void path_follow_task(void *arg)
                     vTaskDelay(10 / portTICK_PERIOD_MS);
                 }
             }
-            // else if (lsa_reading[0] == 0 && lsa_reading[4] == 0 && ((lsa_reading[2] == 1000) && (lsa_reading[1] == 1000 || lsa_reading[3] == 1000)))
-            // {
-            //     calculate_error();
-            //     calculate_correction();
-
-            //     left_duty_cycle = bound((GOOD_DUTY_CYCLE - correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
-            //     right_duty_cycle = bound((GOOD_DUTY_CYCLE + correction), MIN_DUTY_CYCLE, MAX_DUTY_CYCLE);
-
-            //     set_motor_speed(MOTOR_A_1, MOTOR_FORWARD, left_duty_cycle); /*goes forward in this case*/
-            //     set_motor_speed(MOTOR_A_0, MOTOR_FORWARD, right_duty_cycle);
-            // }
-
-            // printf("Special turn detetcion squad\n") ;
             else if ((final_run[final_traversal] - final_run[final_traversal - 1] == -1) || (final_run[final_traversal] - final_run[final_traversal - 1] == 3)) // for left
             {
-                printf("left lele\n") ;
                 left_turn();
                 final_traversal++;
                 vTaskDelay(40/portTICK_PERIOD_MS);
             }
             else if ((final_run[final_traversal] - final_run[final_traversal - 1] == 1) || (final_run[final_traversal] - final_run[final_traversal - 1] == -3)) // for right
             {
-                printf("right lele\n");
                 right_turn();
                 final_traversal++;
                 vTaskDelay(40/portTICK_PERIOD_MS);
             }
             else if (final_run[final_traversal] - final_run[final_traversal - 1] == 0) // for straight and str+right case
             {
-                printf("straightlele\n") ;
                 calculate_error();
                 calculate_correction();
 
@@ -365,12 +348,10 @@ void line_follow_task(void *arg)
             {
                 if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
                 {
-                    printf("left flag confirmed\n");
                     left = 1;
                 }
                 else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
                 {
-                    printf("Right flag confirmed\n");
                     right = true;
                 }
                 else
@@ -389,12 +370,10 @@ void line_follow_task(void *arg)
             {
                 if ((lsa_reading[0] == 1000) && (lsa_reading[1] == 1000) && (lsa_reading[2] == 1000)) // checks left first
                 {
-                    printf("left flag confirmed\n");
                     left = 1;
                 }
                 else if (lsa_reading[0] == 0 && lsa_reading[3] == 1000 && lsa_reading[2] == 1000 && lsa_reading[4] == 1000)
                 {
-                    printf("Right flag confirmed\n");
                     right = 1;
                 }
                 else
@@ -422,8 +401,6 @@ void line_follow_task(void *arg)
                         set_motor_speed(MOTOR_A_1, MOTOR_STOP, 0);
                         vTaskDelay(10 / portTICK_PERIOD_MS);
                     }
-                    
-                    printf("hi new task");
                     xTaskCreate(&path_follow_task, "path_follow_task", 4096, NULL, 1, &taskhandle2);
                     vTaskSuspend(taskhandle1);
  
@@ -438,19 +415,15 @@ void line_follow_task(void *arg)
 
             if (lsa_reading[1] == 0 && lsa_reading[3] == 0 && lsa_reading[2] == 0)
             {
-                printf("ONLY LEFT DETECTED");
                 only_left = true;
             }
             else if (lsa_reading[2] == 1000 && (lsa_reading[1] == 1000 || lsa_reading[3] == 1000))
             {
-                printf("STR+LEFT DETECTED");
                 only_left = false;
             }
         }
         else if (right == 1)
         {
-            // printf("Success 101\n");
-
             while (lsa_reading[4] == 1000 && lsa_reading[3] == 1000)
             {
                 get_raw_lsa();
@@ -463,12 +436,10 @@ void line_follow_task(void *arg)
 
             if ((lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[3] == 0 && lsa_reading[2] == 0 && lsa_reading[4] == 0))
             {
-                printf("ONLY RIGHT DETECTED");
                 only_right = true;
             }
             else if (lsa_reading[2] == 1000 && (lsa_reading[1] == 1000 || lsa_reading[3] == 1000))
             {
-                printf("STR+RIGHT DETECTED");
                 only_right = false;
             }
         }
@@ -478,7 +449,6 @@ void line_follow_task(void *arg)
         if (left == 1)
         {
             // For taking left we always subtract 1
-            printf("DRY left\n") ;
             if (dry_run[pindex - 1] == 1)
             {
                 dry_run[pindex] = 4;
@@ -528,8 +498,6 @@ void line_follow_task(void *arg)
         // This is the condition for dead end and no right and left
         else if ((right == 0) && (left == 0) && lsa_reading[0] == 0 && lsa_reading[1] == 0 && lsa_reading[3] == 0 && lsa_reading[2] == 0 && lsa_reading[4] == 0)
         {
-            
-            printf("DRY U-turn\n") ;
             printf("%d %d %d %d %d\n", lsa_reading[0], lsa_reading[1], lsa_reading[2], lsa_reading[3], lsa_reading[4]);
             // For taking dead_end we subtract 2
             if (dry_run[pindex - 1] == 1)
@@ -576,7 +544,6 @@ void line_follow_task(void *arg)
         }
         else if (only_right == 1 && right == 1)
         {
-            printf("DRY right\n") ;
             if (dry_run[pindex - 1] == 1)
             {
                 dry_run[pindex] = 2;
