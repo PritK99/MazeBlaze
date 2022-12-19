@@ -2,7 +2,7 @@
 set(COMPONENT_REQUIRES )
 set(COMPONENT_PRIV_REQUIRES )
 
-set(COMPONENT_SRCS "lsa.c" "main.c" "tuning_http_server.c")
+set(COMPONENT_SRCS "lsa.c" "main.c")
 set(COMPONENT_ADD_INCLUDEDIRS "include")
 
 register_component()
