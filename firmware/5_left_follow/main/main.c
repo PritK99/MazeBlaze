@@ -1,4 +1,5 @@
 #include "mazeblaze2.h"
+#include "tuning_http_server.h"
 #include "driver/gpio.h"
 
 /*Variables created for path planning testing at 2*/
