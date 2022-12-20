@@ -116,7 +116,7 @@ idf.py -p (PORT) flash monitor
 * [SRA VJTI](https://sravjti.in/) Eklavya 2022  
 * Special thanks to our mentors [Chinmay Lonkar](https://github.com/ChinmayLonkar), [Marck Koothoor](https://github.com/marck3131), [Mateen Shah](https://github.com/Jamm02) and all the seniors at SRA, VJTI for their constant support and guidance throughout the project.
 * [MazeBlaze-v1](https://github.com/ChinmayLonkar/MAZEBLAZE.git) Github repository of MazeBlaze-v1
-* [encoders](https://github.com/DavidAntliff/esp32-rotary-encoder-example.git) reference to interface interrupt service routine in Esp-32.
+* [Encoders](https://github.com/DavidAntliff/esp32-rotary-encoder-example.git) reference to interface interrupt service routine in Esp-32.
  
 ## License
 [MIT License](https://opensource.org/licenses/MIT)
