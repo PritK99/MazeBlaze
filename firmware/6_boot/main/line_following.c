@@ -31,7 +31,6 @@ TaskHandle_t taskhandle3 = NULL;
 /*variables which help to decide which turns to take*/
 void simplify_path()
 {
-    printf("labababab");
     int prev_index = 0;
     int prev_value = dry_run[prev_index];
 
