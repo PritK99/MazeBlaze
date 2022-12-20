@@ -104,7 +104,7 @@ idf.py -p (PORT) flash monitor
 ## Future Work
 
 - [ ] Implementing better algorithms for Maze solving such as DFS, BFS, Djikstra's algorithm etc. on the bot
-- [ ] Improve on the design and model of mazzblaze
+- [ ] Improve on the design and model of MazeBlaze-v2.1
 - [ ] Achive higher speeds by increasing the efficiency of bot
 
 ## Contributors
