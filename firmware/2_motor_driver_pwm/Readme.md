@@ -53,13 +53,6 @@ Voltage regulation operation is performed by averaging the PWM signal. Output vo
 
 * To control the speed of a d.c. motor we need a variable voltage d.c. power source. However if you take a 12v motor and switch on the power to it, the motor will start to speed up: motors do not respond immediately so it will take a small time to reach full speed. If we switch the power off sometime before the motor reaches full speed, then the motor will start to slow down. If we switch the power on and off quickly enough, the motor will run at some speed part way between zero and full speed. This is exactly what a p.w.m. controller does: it switches the motor on in a series of pulses. To control the motor speed it varies (modulates) the width of the pulses – hence Pulse Width Modulation.
 
-# Motor Drivers
-
-Motor drivers acts as an interface between the motors and the control circuits. Motor require high amount of current whereas the controller circuit works on low current signals. So the function of motor drivers is to take a low-current control signal and then turn it into a higher-current signal that can drive a motor.
-
-The motor driver we will use in this workshop is TB6612FNG Motor driver
-
-
 # Description Of Functions Used
 
 *   ```c
