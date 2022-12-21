@@ -62,27 +62,6 @@ The motor driver we will use in this workshop is TB6612FNG Motor driver
 
 # Description Of Functions Used
 
-* ```c
-    esp_err_t enable_motor_driver_a(int mode)	
-    ```
-    **Description** : Enables Motor driver A in Parallel or Normal Mode.
-
-    **Parameters** :
-    * `mode` : if mode = 1 is passed, motor driver is operated in parallel mode, if mode = 2 is passed, motor driver is operated in normal mode
-
-    **Returns** : esp_err_t returns ESP_OK if motor driver initialised properly, else it returns ESP_ERR_INVALID_ARG
-
-* ```c
-    esp_err_t enable_motor_driver_b(int mode)	
-    ```
-    **Description** : Enables Motor driver B in Parallel or Normal Mode.
-
-    **Parameters** :
-    * `mode` : if mode = 1 is passed, motor driver is operated in parallel mode, if mode = 2 is passed, motor driver is operated in normal mode
-
-    **Returns** : esp_err_t returns ESP_OK if motor driver initialised properly, else it returns ESP_ERR_INVALID_ARG
-
-
 *   ```c
     esp_err_t set_motor_speed (int motor_id, int direction, float duty_cycle )
     ```
