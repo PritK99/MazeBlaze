@@ -18,9 +18,6 @@ The robot uses arrays of sensors (LSAs) to identify the line, thus assisting the
 * 3 for the leftmost sensor, -3 for the rightmost
 * The more negative the resulting weighted sum, the more the robot is to the left of the line, and vice versa.
 
-<!-- ![curves](./assets/curves.png =100x100) -->
-<img src="./assets/curves.png" alt=" " width="300" height="300"/>
-
 ### Use of PID
 
 PID stands for **P**roportional-**I**ntegral-**D**erivative
@@ -39,8 +36,8 @@ For easy tuning we use wifi module that dynamically changes the `kp,ki,kd` value
  3. Server receives the kp,ki,kd values for tuning
  4. Server makes appropriate changes to the bot
  5. Back to step 3
-<!-- ![wifi](./assets/wifi.png =100x100) -->
-<img src="./assets/wifi.png" alt=" " height="300"/>
+
+![wifi](https://user-images.githubusercontent.com/103832825/208859651-6cbe3176-214c-4d42-9b09-46669f722ae4.png)
 
 ## ALGORITHM
 The process to implement a line following robot can be summarized in these basic steps :
@@ -49,10 +46,8 @@ Sensors detect deviation from line
 > 2. Find error correction
 > 3. Correct the error
 > 4. Follow the line
-<!-- ![chart1](./assets/chart.png) -->
-<img src="./assets/chart.png" alt=" " height="500"/>
 
-
+![chart](https://user-images.githubusercontent.com/103832825/208859859-47704e92-be6e-4ce5-baf3-9f2a8d45414f.png)
 
 ## Description of the functions
 ```c
