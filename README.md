@@ -48,6 +48,7 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
    ┣ 📂3_encoders                      // Contains code for interfacing encoders 
    ┣ 📂4_line_following                // Contains code for line following
    ┣ 📂5_left_follow                   // Contains code for left-follow-rule and path planning
+   ┣ 📂6_boot 
   ┣ 📂Components                       // Contains all the header and source files used in project
      ┣ 📂include                       
      ┣ 📂src 
