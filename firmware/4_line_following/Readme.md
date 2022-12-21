@@ -1,6 +1,11 @@
 # TABLE OF CONTENTS
 * [PID controller](#PID-Controller)
-* [Description Of Functions Used](#description-of-functions-used)
+    * [Theory](#Theory)
+    * [Error Calculation](#Error-Calculation)
+    * [Use of PID](#Use-of-PID)
+    * [Use of wifi module](#Use-of-wifi-module)
+    * [Algorithm](#Algorithm)
+* [Description Of Functions Used](#Description-of-functions-used)
 
 # PID Contoller
 
@@ -10,7 +15,6 @@ A Line Following Robot is an autonomous robot which is able to follow a line (us
 
 ![2-PID-controller-Arduino](https://user-images.githubusercontent.com/103832825/208858059-9e96e7c5-80dc-4473-beba-a7648f62a8f7.png)
 
-## How does a bot follow the line?
 The robot uses arrays of sensors (LSAs) to identify the line, thus assisting the robot to stay on the track. 
 
 ### Error Calculation
