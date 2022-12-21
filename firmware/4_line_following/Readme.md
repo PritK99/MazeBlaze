@@ -3,7 +3,7 @@
     * [Theory](#Theory)
     * [Error Calculation](#Error-Calculation)
     * [Use of PID](#Use-of-PID)
-    * [Use of wifi module](#Use-of-wifi-module)
+    * [Use of Wifi module](#Use-of-wifi-module)
     * [Algorithm](#Algorithm)
 * [Description Of Functions Used](#Description-of-functions-used)
 
@@ -53,7 +53,7 @@ Sensors detect deviation from line
 
 ![chart](https://user-images.githubusercontent.com/103832825/208859859-47704e92-be6e-4ce5-baf3-9f2a8d45414f.png)
 
-## Description of the functions
+# Description of the functions
 ```c
 void calculate_error()
 ```
