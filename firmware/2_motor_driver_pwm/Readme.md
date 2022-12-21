@@ -3,7 +3,6 @@
   * [Duty Cycle](#duty-cycle)
   * [Period](#period)
 * [PWM – For controlling speed](*pwm-for-controlling-speed)
-* [Motor Drivers](#motor-drivers)
 * [Description Of Functions Used](#description-of-functions-used)
 
 
@@ -18,7 +17,6 @@ There are various terms related with the Pulse Width Modulation:-
 * **Off-Time** :- Duration of time period when the signal is low.
 * **ON-Time**  :- Duration of time period when the signal is high.
 * **Duty cycle** :- It is the percentage of the time period when the signal remains ON during the period of the pulse width modulation signal.
-* **Period** :- It is the sum of off-time and on-time of pulse width modulation signal.
 
 ## Duty Cycle
 
@@ -27,25 +25,6 @@ Calculation of duty cycle is done by calculating the ON-time from total period o
 ![](https://www.javatpoint.com/embeddedsystem/images/pwm-avr-microcontroller2.png)
 
 ![](https://upload.wikimedia.org/wikipedia/commons/b/b8/Duty_Cycle_Examples.png)
-
-## Period 
-As represented in the above figure, Toff represents the off-time and Ton represents the on-time of a signal. Period is a sum of both on and off times and period is calculated as shown in the equation below:
-
-![](https://www.javatpoint.com/embeddedsystem/images/pwm-avr-microcontroller3.png)
-
-
-# PWM: Voltage Regulation
-PWM signals when operates at different duty cycle it gives a varying voltage at the output. Voltage regulation method is used in various areas of application like:
-
-* Audio
-* LED dimmers
-* Analog Signal Generation
-* Switching regulators
-* Motor Control
-
-Voltage regulation operation is performed by averaging the PWM signal. Output voltage is calculated as shown in the equation below:
-
-![](https://www.javatpoint.com/embeddedsystem/images/pwm-avr-microcontroller4.png)
 
 # PWM – For controlling speed
 
