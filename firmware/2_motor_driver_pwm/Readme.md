@@ -1,7 +1,6 @@
 # TABLE OF CONTENTS
 * [Pulse Width Modulation](#pulse-width-modulation)
   * [Duty Cycle](#duty-cycle)
-  * [Period](#period)
 * [PWM – For controlling speed](*pwm-for-controlling-speed)
 * [Description Of Functions Used](#description-of-functions-used)
 
