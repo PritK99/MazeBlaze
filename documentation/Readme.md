@@ -20,6 +20,8 @@ In simple words, the "Left Hand Rule" approach is to make your way through the m
  
 For the implementation of left follow, we need to record every turn taken by the bot. Then we need to recognize the redundant paths from the given turns.
 
+![2074564](https://user-images.githubusercontent.com/103832825/209424671-ec7594f3-433d-41e0-a0ab-9558aeedb6f2.png)
+
 We assign numbers to each direction and then store these numbers in an array called <b>dry_run[ ]</b>.
 
 ```
