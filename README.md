@@ -8,7 +8,6 @@
   - [Demo](#demo)
   - [File Structure](#file-structure)
   - [Getting started](#Getting-Started)
-  - [Project flow](#Project-flow)
   - [Future Work](#future-work)
   - [Contributors](#contributors)
   - [Acknowledgements and Resources](#acknowledgements-and-references)
@@ -101,8 +100,6 @@ To flash the code
 ```
 idf.py -p (PORT) flash monitor
 ```
-## Project flow
-
 ## Future Work
 
 - [ ] Implementing better algorithms for Maze solving such as DFS, BFS, Djikstra's algorithm etc. on the bot
