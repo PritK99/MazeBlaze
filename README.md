@@ -37,7 +37,7 @@ Embedeed C, Graph algorithms, electronics, Basics of PCB design etc.
 ## File Structure
 ```
 👨‍💻MazeBlaze-v2.1
- ┣ 📂assets                            // Installation.md & all reference gifs, images
+ ┣ 📂assets                            // Contains all the reference gifs, images
  ┣ 📂documentation
  ┣ 📂firmware                          // Code files 
    ┣ 📂1_lsa                           // Contains code for getting readings from LSA 
