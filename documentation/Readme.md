@@ -91,6 +91,10 @@ Thus, when we call simply_path(), it removes all these redundancies and stores t
 final_run[ ] = {1, 4, 1, 2, 1, 4, 1, 2, 3, 2, 3, 3, 4, 3, 2, 1, 2, 1, 4, 1, 2}
 ```
 
+Thus, we make use of simplify_path() function in our code :
+
+![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
+
 ```
 UNDER REVIEW 
 PLEASE IGNORE FOR NOW
