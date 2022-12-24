@@ -76,13 +76,20 @@ for all i > 0 and dry_run[0] = 1 (The diection which bot faces initially, is alw
 ![image](https://user-images.githubusercontent.com/103832825/209423014-8fc88d07-ed65-4b5d-8687-d810516f8c0e.png)
 
 Thus, for the given maze, Assuming starting position as North i.e. 1, The array dry_run[ ] will store the following,
+
+```
 Dry_run[ ] = {1, 4, 1, 2, 1, 4, 1, 1, 3, 2, 1, 3, 2, 1, 2, 4, 3, 2, 3, 3, 4, 3, 2, 1, 2, 1, 4, 1, 1, 3, 2}
+```
 
 Here, the redundant paths are highlighted in bold 
-Dry_run[ ] = {1, 4, 1, 2, 1, 4, 1, 1, 3, 2, 1, 3, 2, 1, 2, 4, 3, 2, 3, 3, 4, 3, 2, 1, 2, 1, 4, 1, 1, 3, 2}
+
+Dry_run[ ] = {1, 4, 1, 2, 1, 4, 1, <b>1, 3</b>, 2, <b>1, 3</b>, 2, <b>1, 2, 4, 3</b>, 2, 3, 3, 4, 3, 2, 1, 2, 1, 4, 1, <b>1, 3</b>, 2}
 
 Thus, when we call simply_path(), it removes all these redundancies and stores the shortest path in an array called final_run[ ].
+
+```
 Final_run[ ] = {1, 4, 1, 2, 1, 4, 1, 2, 3, 2, 3, 3, 4, 3, 2, 1, 2, 1, 4, 1, 2}
+```
 
 ```
 UNDER REVIEW 
