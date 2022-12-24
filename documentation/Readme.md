@@ -95,21 +95,26 @@ Thus, we make use of simplify_path() function in our code :
 
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
-```
-UNDER REVIEW 
-PLEASE IGNORE FOR NOW
+## <u><b>Other Algorithms</b></u>
 
 A maze can be represented as a graph G ( V, E ) , where V refers to the number of nodes and E refers to the number of edges. 
 Thus we can modify and apply several graph algorithms over a given maze to solve it.
 
 We studied several algorithms to traverse maze and find the shortest path. 
 
-In order to traverse the maze, we can use DFS or BFS. Once we get the knowledge of all the vertices, edges and cost related to each edge, we can implement algorithms like dijkstra's algorithm to get the shortest path. We can also modify Flood fill algorithm and use it to solve the maze.
+For <b>Maze traversal</b>, Apart from "Left-Follow-rule" and "Right-Follow-rule", we studied the following algorithms :
 
-One of the approaches which we decided to work on was to implement DFS to traverse the maze and then use dijkstra's algorithm to find the shortest path.
+### <b><u>1) Depth First Search (DFS)</b></u>
 
-We referred few research papers and github repository to implement the algorithm. We even interfaced encoders, which will allow us to to obtain cost of an edge i.e. the distance between two vertices.
 
-However, due to the shortage of time, we decided to use left-follow rule to solve the maze.
+### <b><u>2) Breadth First Search (BFS)</b></u>
 
-```
+
+For solving the maze, that is finding the <b>shortest path</b>, we studied the following algorithms :
+
+### <b><u>1) Djikstra's Algorithm</b></u>
+
+### <b><u>2) FloodFill Algorithm </b></u>
+
+
+Implementing these algorithms in the bot is one of our future aims
