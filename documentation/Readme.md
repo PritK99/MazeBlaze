@@ -117,9 +117,26 @@ Thus we can modify and apply several graph algorithms over a given maze to solve
 
 The proposed maze mapping system is based on coordinate system and after mapping the whole maze as a graph in standard 'Adjacency-List representation' or 'Adjacency-Matrix representation' method, shortest path and shortest time path can be extracted using Dijkstra's algorithm or floodfill algorithm.
 
-```
-explainaition for DFS pending ..................
-```
+While traversing, the first thing that we need to do is we need to keep track of which vertices we've already found. And for this, we're going to associate a boolean variable to each vertex visited(v) which basically tells us have we visited it yet.
+
+The next thing that we're going to need to do is we need to is to keep track of the list of vertices that still have edges hanging off of them that might connect this to something new or in other words, are unexplored. 
+
+The final thing is we need to discover which order to discover, to follow new edges in. And for this we are going to use what is known as the Depth First order. What this means is we're just going to start our initial vertex and we're just going to start following a chain of edges. 
+
+We're just going to follow some really long path forward until one of two things happens. 
+* One thing is we could stumble across a vertex that we have already seen before. In which case there's no reason to have followed that edge and we'll just back up to where we were before.
+
+    This is the case where a <b>loop</b> exists in maze and our bot returns to the same vertex again.
+* The second thing that could happen though is that we hit a dead end. And we actually hit a <b>dead end</b> and can't go any further forward, then we actually back up. And then once we back up though, we don't just back all the way to the beginning.
+
+    We just back up once step and then try going forwards again from that new vertex that we found.
+
+Okay, so that's the basic idea. How do we implement this? Well part of the beauty about this is that we have a very simple recursive algorithm. So Explore(v), the first thing you do is you set the visited marker of v to be true. We say we have visited it. Next, for each neighbor w of v, for each w that's adjacent to v, if w has not already been visited, we recursively explore w.
+This goes on and on till we hit one of the two conditons mentioned above.
+
+
+
+
 
 DFS is one of the most ideal method to map since it ensures that the entire maze is mapped, unlike left follow rule.
 

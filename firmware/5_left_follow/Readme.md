@@ -103,3 +103,18 @@ Thus, we make use of simplify_path() function in our code :
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
 # Description Of Functions Used
+
+*   ```c
+    void simplify_path()
+    ```
+**Description** : Removes all the redundancies from dry_run[ ] and stores the shortest path in another array called final_run[ ]
+
+*   ```c
+    void left_turn()
+    ```
+**Description** : function to make the bot take a left turn during final run
+
+*   ```c
+    void right_turn()
+    ```
+**Description** : function to make the bot take a right turn during final run
