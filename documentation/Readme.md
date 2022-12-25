@@ -132,6 +132,9 @@ We're just going to follow some really long path forward until one of two things
     We just back up once step and then try going forwards again from that new vertex that we found.
 
 Okay, so that's the basic idea. How do we implement this? Well part of the beauty about this is that we have a very simple recursive algorithm. So Explore(v), the first thing you do is you set the visited marker of v to be true. We say we have visited it. Next, for each neighbor w of v, for each w that's adjacent to v, if w has not already been visited, we recursively explore w.
+
+![image](https://user-images.githubusercontent.com/103832825/209459325-f9968200-61af-4beb-9c5a-08235f023a78.png)
+
 This goes on and on till we hit one of the two conditons mentioned above.
 
 
