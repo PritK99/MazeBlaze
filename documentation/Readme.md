@@ -124,6 +124,7 @@ The next thing that we're going to need to do is we need to is to keep track of 
 The final thing is we need to discover which order to discover, to follow new edges in. And for this we are going to use what is known as the Depth First order. What this means is we're just going to start our initial vertex and we're just going to start following a chain of edges. 
 
 We're just going to follow some really long path forward until one of two things happens. 
+
 * One thing is we could stumble across a vertex that we have already seen before. In which case there's no reason to have followed that edge and we'll just back up to where we were before.
 
     This is the case where a <b>loop</b> exists in maze and our bot returns to the same vertex again.
@@ -133,17 +134,32 @@ We're just going to follow some really long path forward until one of two things
 
 Okay, so that's the basic idea. How do we implement this? Well part of the beauty about this is that we have a very simple recursive algorithm. So Explore(v), the first thing you do is you set the visited marker of v to be true. We say we have visited it. Next, for each neighbor w of v, for each w that's adjacent to v, if w has not already been visited, we recursively explore w.
 
-![image](https://user-images.githubusercontent.com/103832825/209459325-f9968200-61af-4beb-9c5a-08235f023a78.png)
+This goes on and on till we hit one of the two conditons mentioned above. These two conditions are the base conditions for recursive calls in our case.
+ 
+Thus the pseudo code for DFS is : 
+```
+Step 1: Create a stack with the total number of vertices in the graph as the size.
 
-This goes on and on till we hit one of the two conditons mentioned above.
+Step 2: Choose any vertex as the traversal's beginning point. Push a visit to that vertex and add it to the stack.
+
+Step 3 - Push any non-visited adjacent vertices of a vertex at the top of the stack to the top of the stack.
+
+Step 4 - Repeat steps 3 and 4 until there are no more vertices to visit from the vertex at the top of the stack.
+
+Step 5 - If there are no new vertices to visit, go back and pop one from the stack using backtracking.
+
+Step 6 - Continue using steps 3, 4, and 5 until the stack is empty.
+
+Step 7 - When the stack is entirely unoccupied, create the final spanning tree by deleting the graph's unused edges.
+```
+
+#### <b><u>Example</b></u>
 
 
 
+Apart from exploring all the nodes, we need to store the cost of edges too. In order to find the coordinates of the turning points and junctions, linear distance between the points are needed, for which wheel encoder was used. Considering a tolerance of 3-5 %, encoders gives us almost exact linear distance between two points from the reading of wheel encoder of the robot moving in a linear path.
 
-
-DFS is one of the most ideal method to map since it ensures that the entire maze is mapped, unlike left follow rule.
-
-In order to find the coordinates of the turning points and junctions, linear distance between the points are needed, for which wheel encoder was used. Considering a tolerance of 3-5 %, encoders gives us almost exact linear distance between two points from the reading of wheel encoder of the robot moving in a linear path.
+One way to do the same is that either than storing 0's and 1's in adjacency matrix, we can store their costs.
 
 We interfaced Encoders in our bot using interrupt service routine (ISR) to give proper distance between two nodes.
 
