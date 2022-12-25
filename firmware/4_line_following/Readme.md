@@ -65,4 +65,4 @@ void calculate_error()
 void calculate_correction()
 ```
 **Description**: Uses error calculated by the error function to calculate the correction. 
-> ```c    correction = read_pid_const().kp*error + read_pid_const().ki*cumulative_error + read_pid_const().kd*difference ```
+> ```correction = read_pid_const().kp*error + read_pid_const().ki*cumulative_error + read_pid_const().kd*difference ```
