@@ -1,8 +1,12 @@
-# MazeBlaze-v2
+# TABLE OF CONTENTS
+* [Left Follow Rule](#left-Follow-Rule)
+    * [Theory](#Theory)
+    * [Implementation](#Implementation)
+* [Description Of Functions Used](#description-of-functions-used)
 
-## <b><u>Left Follow Rule</b></u>
+# Left Follow Rule
 
-### <b><u>Theory</b></u>
+## Theory
 
 The “left-hand rule” or “left-follow-algorithm” is a Maze solving technique in which you place your left hand on the wall to your left, and keep it touching the wall as you move through the Maze. In other words, you continually take left turns. A parallel rule is the “right-hand rule” which is the same but you instead always take right turns.
 
@@ -17,7 +21,7 @@ In simple words, the "Left Hand Rule" approach is to make your way through the m
 4) If you cannot turn left, go straight, or turn right, turn around because you must be at a dead end
 ```
 
-### <b><u>Implementation</b></u>
+## <b><u>Implementation</b></u>
 
 For the implementation of left follow, we need to record every turn taken by the bot. Then we need to recognize the redundant paths from the given turns.
 
@@ -98,39 +102,4 @@ Thus, we make use of simplify_path() function in our code :
 
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
-## <b><u>Problems with current algorithm</b></u>
-
-The <b>Left-Follow algorithm</b> helps in reducing the <b>redundancies</b> from the path. However, the problem with Left-Follow rule is that the entire maze does <b>not</b> get <b>mapped</b>, and thus the path so obtained in final_run[ ] is <b>not</b> the <b>most optimum path</b>.
-
-However,The problem with Left-Follow rule is that the entire maze does not get mapped, and thus the path so obtained in final_run[ ] is <b>not</b> the <b>most optimum path</b>.
-
-For the general algorithm, we need a method to <b>map the whole maze</b>, which is required if the maze is complex.
-
-Thus there are a several other alternatives, which help in mapping the maze completely and calculate shortest path. During our project, we studied several algorithms to traverse maze and find the shortest path.
-
-## <u><b>Other Algorithms</b></u>
-
-A maze can be represented as a graph G ( V, E ) , where V refers to the number of nodes and E refers to the number of edges.
-Thus we can modify and apply several graph algorithms over a given maze to solve it.
-
-### <b><u>Depth First Search (DFS)</b></u>
-
-The proposed maze mapping system is based on coordinate system and after mapping the whole maze as a graph in standard 'Adjacency-List representation' or 'Adjacency-Matrix representation' method, shortest path and shortest time path can be extracted using Dijkstra's algorithm or floodfill algorithm.
-
-```
-explainaition for DFS pending ..................
-```
-
-DFS is one of the most ideal method to map since it ensures that the entire maze is mapped, unlike left follow rule.
-
-In order to find the coordinates of the turning points and junctions, linear distance between the points are needed, for which wheel encoder was used. Considering a tolerance of 3-5 %, encoders gives us almost exact linear distance between two points from the reading of wheel encoder of the robot moving in a linear path.
-
-We interfaced Encoders in our bot using interrupt service routine (ISR) to give proper distance between two nodes.
-
-<a href = "https://github.com/PritK99/MazeBlaze-v2.1/tree/main/firmware/3_encoders" >Code</a> for interfacing ISR in Esp32 and obtaining readings from encoders.
-
-### <b><u>Djikstra's Algorithm</b></u>
-
-### <b><u>FloodFill Algorithm </b></u>
-
-Implementing these algorithms in the bot is one of our future aims.
+# Description Of Functions Used
