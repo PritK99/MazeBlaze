@@ -31,8 +31,9 @@ West - 4
 ```
 
 We always consider that the bot initially is always facing the North direction. Thus other directions are established as per the North direction.
-Once established, these directions are fixed with respect to world frame, and the bot keeps track of all these directions whenever it takes turns
+Once established, these directions are fixed with respect to world frame, and the bot keeps track of all these directions whenever it takes turns.
 
+Our program is going to keep track of the serial numbers (direction index) of the above assumptions only. When ever our robot encounters a node or turns, it has to make an entry of one of these direction index into the direction array.
 ### <b><u>1) Condition for left</u></b>
 
 Whenever the bot takes a <b>left</b>, it simply has to <b>subtract 1 from the previous reading</b> in array to get current reading.
