@@ -17,7 +17,7 @@
 * [Other Algorithms](#Other-algorithms)
     * [Depth First Search (DFS)](Depth-first-search-DFS)
     * [Floodfill algorithm](#Floodfill-algorithm)
-    * [Djikstra's algorithm](#Djikstra's-algorithm)
+    * [Dijkstra's algorithm](#Dijkstra's-algorithm)
 # <b><u>PID Contoller</b></u>
 
 ## <b><u>Theory</b></u>
@@ -177,6 +177,22 @@ Thus, we make use of simplify_path() function in our code :
 
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
+## Description Of Functions Used
+
+*   ```c
+    void simplify_path()
+    ```
+**Description** : Removes all the redundancies from dry_run[ ] and stores the shortest path in another array called final_run[ ]
+
+*   ```c
+    void left_turn()
+    ```
+**Description** : function to make the bot take a left turn during final run
+
+*   ```c
+    void right_turn()
+    ```
+**Description** : function to make the bot take a right turn during final run
 ## <b><u>Problems with current algorithm</b></u>
 
 The <b>Left-Follow algorithm</b> helps in reducing the <b>redundancies</b> from the path. However, the problem with Left-Follow rule is that the entire maze does <b>not</b> get <b>mapped</b>, and thus the path so obtained in final_run[ ] is <b>not</b> the <b>most optimum path</b>.
@@ -221,7 +237,7 @@ Apart from exploring all the nodes, we need to store the cost of edges too. In o
 
 We interfaced Encoders in our bot using interrupt service routine (ISR) to give proper distance between two nodes.This is the <a href = "https://github.com/PritK99/MazeBlaze-v2.1/tree/main/firmware/3_encoders" >code</a> for interfacing ISR in Esp32 and obtaining readings from encoders.
 
-## <b><u>Djikstra's Algorithm</b></u>
+## <b><u>Dijkstra's Algorithm</b></u>
 
 ## <b><u>FloodFill Algorithm </b></u>
 
