@@ -147,4 +147,16 @@ We interfaced Encoders in our bot using interrupt service routine (ISR) to give 
 
 ### <b><u>FloodFill Algorithm </b></u>
 
-Implementing these algorithms in the bot is one of our future aims.
+Flood fill algorithm itself is analogous to flooding a maze with Water.Water continues to flow to flood the whole maze. Path traversed by the first water drops until it reaches the start location is the shortest path to reach that goal.
+
+How it works flood fill algorithm is to start giving value to each cell in the maze. The process of scoring was done by observing the position of the existing walls of the maze. The first water-filled cells are the cells of interest and these cells are given a value of 0. The water then flows into the surrounding area which is not blocked by the wall. The next cell that has been filled with water will be assigned a value of 1, then this value will continue to grow to the next cell to the entire cell occupied by water maze. The robot cannot move diagonally and the robots have learned some of the positions of the existing wall.
+
+ The values of these cells represents the distance of each cell to the destination cell. If the robot is in a cell that is worth 2, the robot is located as far as 2 cells from the cells of interest. Assume cells that are at the bottom left of the initial cell, then searched the cell, which has a smaller value than the value of the cell that is being occupied. The path is the shortest path is formed which can be reached from the initial cell leading to the destination cell With the flood fill algorithm, each time the robot reaches a new cell, the robot needs to update the mapping of the walls, refill each cell with the new values, determine neighboring cells which have the smallest value, and continue moving towards neighboring cells which have the smallest value.
+
+<a href = "https://www.youtube.com/watch?v=GoJ-K7gniFI">Click here</a> for detailed explaination of floodfill.
+
+<a href = "https://www.youtube.com/watch?v=Zwh-QNlsurI">Click here</a> for an example of maze solved by floodfill. 
+
+<a href = "https://www.youtube.com/watch?v=7Q_RRomuXYk">Click here</a> for reference to pseudo-code and implementation of floodfill algorithm.
+
+Implementing these algorithms in MazeBlaze-v2.1 is one of our future aims.
