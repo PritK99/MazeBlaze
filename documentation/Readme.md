@@ -243,11 +243,22 @@ We interfaced Encoders in our bot using interrupt service routine (ISR) to give 
 
 Flood fill algorithm itself is analogous to flooding a maze with Water.Water continues to flow to flood the whole maze. Path traversed by the first water drops until it reaches the start location is the shortest path to reach that goal.
 
-How it works flood fill algorithm is to start giving value to each cell in the maze. The process of scoring was done by observing the position of the existing walls of the maze. The first water-filled cells are the cells of interest and these cells are given a value of 0. The water then flows into the surrounding area which is not blocked by the wall. The next cell that has been filled with water will be assigned a value of 1, then this value will continue to grow to the next cell to the entire cell occupied by water maze. The robot cannot move diagonally and the robots have learned some of the positions of the existing wall.
+Flood fill algorithm initially gives a <b>value</b> to each cell in the maze depending upon its <b>manhattan</b> distance from the end goal. The first water-filled cells are the <b>cells of interest</b> and these cells are given a value of <b>0</b>. All the cells that lie at a manhattan distance of 1 are given value 1 and so on.
+
+The water then flows into the surrounding area which is not blocked by the wall or dead end in our case. The next cell that has been filled with water will be assigned a value of 1, then this value will continue to grow to the next cell to the entire cell occupied by water maze.
+
+The formula in general 
+
+```
+value for current cell = value of least expensive neighbour cell + 1 
+
+```
+
+This concept works well for micromouse which have fixed cells and walls. In case of line following maze, we need to slightly change the floodfill algorithm, such that it can deal with curves, 45 degree turns, uneven lines etc.
 
  The values of these cells represents the <b>manhattan distance</b> of each cell to the destination cell. If the robot is in a cell that is worth 2, the robot is located as far as 2 cells from the cells of interest, which is the end of maze. 
  
- Assume cells that are at the bottom left of the initial cell, then searched the cell, which has a smaller value than the value of the cell that is being occupied. The path is the shortest path is formed which can be reached from the initial cell leading to the destination cell With the flood fill algorithm, each time the robot reaches a new cell, the robot needs to update the mapping of the dead ends, refill each cell with the new values, determine neighboring cells which have the smallest value, and continue moving towards neighboring cells which have the smallest value.
+ Assume cells that are at the bottom left of the initial cell, then searched the cell, which has a <b>smaller value</b> than the value of the cell that is being occupied. The path is the shortest path is formed which can be reached from the initial cell leading to the destination cell With the flood fill algorithm, each time the robot reaches a new cell, the robot needs to <b>update</b> the mapping of the dead ends, refill each cell with the new values, determine neighboring cells which have the <b>smallest value</b>, and continue moving towards neighboring cells which have the smallest value.
 
 <a href = "https://www.youtube.com/watch?v=GoJ-K7gniFI">Click here</a> for detailed explaination of floodfill.
 
