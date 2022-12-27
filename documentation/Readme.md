@@ -7,7 +7,7 @@
     * [Use of PID](#Use-of-PID)
     * [Use of Wifi module](#Use-of-wifi-module)
     * [Algorithm](#Algorithm)
-    * [Description Of Functions Used](#Description-of-functions-used)
+    * [Description Of Functions Used](#description-of-the-functions)
 * [Left Follow Rule](#Left-follow-rule)
     * [Theory](#left-follow-rule/theory)
     * [Implementation](#Implementation)
@@ -15,9 +15,9 @@
     * [Description Of Functions Used](#Description-of-functions-used)
     * [Problems with current algorithm](#problems-with-current-algorithm)
 * [Other Algorithms](#Other-algorithms)
-    * [Depth First Search (DFS)](Depth-first-search-(DFS))
-    * [FloodFill algorithm](#FloodFill-algorithm)
-    * [Dijkstra's algorithm](#Dijkstra's-algorithm)
+    * [Depth First Search (DFS)](depth-first-search-dfs)
+    * [FloodFill algorithm](#FloodFill-algorithm-)
+    * [Dijkstra's algorithm](#dijkstras-algorithm)
 # <b><u>PID Contoller</b></u>
 
 ## <b><u>Theory</b></u>
