@@ -246,6 +246,8 @@ This algorithm uses the weights of the edges to find the path that minimizes the
 
 Here we assume that start is a source vertex, and distance to all the other vertices is infinity. Initially, we do not know the distances. 
 
+<a href = "https://www.youtube.com/watch?v=XB4MIexjvY0">Click here</a> for detailed explaination of Dijksra's algorithm.
+
 <a href = "https://github.com/Vishnuparammal/maze_runner">Click here</a> for reference to pseudo-code and implementation of Dijkstra's Algorithm.
 
 ## <b><u>FloodFill Algorithm </b></u>
