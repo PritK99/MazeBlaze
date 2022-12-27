@@ -9,14 +9,14 @@
     * [Algorithm](#Algorithm)
     * [Description Of Functions Used](#Description-of-functions-used)
 * [Left Follow Rule](#Left-follow-rule)
-    * [Theory](#Theory)
+    * [Theory](#left-follow-rule/theory)
     * [Implementation](#Implementation)
     * [Example](#example)
     * [Description Of Functions Used](#Description-of-functions-used)
     * [Problems with current algorithm](#problems-with-current-algorithm)
 * [Other Algorithms](#Other-algorithms)
-    * [Depth First Search (DFS)](Depth-first-search-DFS)
-    * [Floodfill algorithm](#Floodfill-algorithm)
+    * [Depth First Search (DFS)](Depth-first-search-(DFS))
+    * [FloodFill algorithm](#FloodFill-algorithm)
     * [Dijkstra's algorithm](#Dijkstra's-algorithm)
 # <b><u>PID Contoller</b></u>
 
