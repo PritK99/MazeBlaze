@@ -1,8 +1,24 @@
 # MazeBlaze-v2
 
-## <b><u>PID Contoller</b></u>
+# TABLE OF CONTENTS
+* [PID controller](#PID-Controller)
+    * [Theory](#Theory)
+    * [Error Calculation](#Error-Calculation)
+    * [Use of PID](#Use-of-PID)
+    * [Use of Wifi module](#Use-of-wifi-module)
+    * [Algorithm](#Algorithm)
+    * [Description Of Functions Used](#Description-of-functions-used)
+* [Left Follow Rule](#Left-follow-rule)
+    * [Theory](#Theory)
+    * [Error Calculation](#Error-Calculation)
+    * [Use of PID](#Use-of-PID)
+    * [Use of Wifi module](#Use-of-wifi-module)
+    * [Algorithm](#Algorithm)
+    * [Description Of Functions Used](#Description-of-functions-used)
 
-### <b><u>Theory</b></u>
+# <b><u>PID Contoller</b></u>
+
+## <b><u>Theory</b></u>
 Line Following is one of the most important aspects of robotics.
 A Line Following Robot is an autonomous robot which is able to follow a line (usually black or white) that is drawn on a surface consisting of a contrasting color. It is designed to move automatically and follow the line.
 
@@ -10,12 +26,12 @@ A Line Following Robot is an autonomous robot which is able to follow a line (us
 
 The robot uses arrays of sensors (LSAs) to identify the line, thus assisting the robot to stay on the track. 
 
-### <b><u>Error Calculation</b></u>
+## <b><u>Error Calculation</b></u>
 * First, we multiply the values of the LSA with certain weights. Here we have used 3,1,0,-1, and -3
 * 3 for the leftmost sensor, -3 for the rightmost
 * The more negative the resulting weighted sum, the more the robot is to the left of the line, and vice versa.
 
-### <b><u>Use of PID</b></u>
+## <b><u>Use of PID</b></u>
 
 PID stands for **P**roportional-**I**ntegral-**D**erivative
 It is one kind of device used to control different process variables like pressure, flow, temperature, and speed in industrial applications. In this controller, a control loop feedback device is used to regulate all the process variables.This type of control is used to drive a system in the direction of an objective location otherwise level.
@@ -23,7 +39,7 @@ It is one kind of device used to control different process variables like pressu
 > * [This link explains PID with respect to line folllowing](https://youtu.be/4Y7zG48uHRo)
 
 
-### <b><u>Use of Wifi Module</b></u>
+## <b><u>Use of Wifi Module</b></u>
 Although simple in concept, the mathematics underpinning PID control is complex and acheiving optimal performance entails selecting process-specific values for a range of interacting parameters.
 The process of finding these values is referred to as “tuning.” When a PID controller is tuned optimally, the device minimizes deviation from the set point, and responds to disturbances or set point changes quickly but with minimal overshoot.
 
@@ -36,7 +52,7 @@ For easy tuning we use wifi module that dynamically changes the `kp,ki,kd` value
 
 ![wifi](https://user-images.githubusercontent.com/103832825/208859651-6cbe3176-214c-4d42-9b09-46669f722ae4.png)
 
-### <b><u>Algorithm</b></u>
+## <b><u>Algorithm</b></u>
 The process to implement a line following robot can be summarized in these basic steps :
 Sensors detect deviation from line
 > 1. Find error
@@ -46,7 +62,7 @@ Sensors detect deviation from line
 
 ![chart](https://user-images.githubusercontent.com/103832825/208859859-47704e92-be6e-4ce5-baf3-9f2a8d45414f.png)
 
-### <b><u>Description of the functions</b></u>
+## <b><u>Description of the functions</b></u>
 ```c
 void calculate_error()
 ```
@@ -60,9 +76,9 @@ void calculate_correction()
 **Description**: Uses error calculated by the error function to calculate the correction. 
 > ```correction = read_pid_const().kp*error + read_pid_const().ki*cumulative_error + read_pid_const().kd*difference ```
 
-## <b><u>Left Follow Rule</b></u>
+# <b><u>Left Follow Rule</b></u>
 
-### <b><u>Theory</b></u>
+## <b><u>Theory</b></u>
 
 The “left-hand rule” or “left-follow-algorithm” is a Maze solving technique in which you place your left hand on the wall to your left, and keep it touching the wall as you move through the Maze. In other words, you continually take left turns. A parallel rule is the “right-hand rule” which is the same but you instead always take right turns.
 
@@ -77,7 +93,7 @@ In simple words, the "Left Hand Rule" approach is to make your way through the m
 4) If you cannot turn left, go straight, or turn right, turn around because you must be at a dead end
 ```
 
-### <b><u>Implementation</b></u>
+## <b><u>Implementation</b></u>
 
 For the implementation of left follow, we need to record every turn taken by the bot. Then we need to recognize the redundant paths from the given turns.
 
@@ -94,7 +110,7 @@ We always consider that the bot initially is always facing the North direction. 
 Once established, these directions are fixed with respect to world frame, and the bot keeps track of all these directions whenever it takes turns.
 
 Our program is going to keep track of the serial numbers (direction index) of the above assumptions only. When ever our robot encounters a node or turns, it has to make an entry of one of these direction index into the direction array.
-### <b><u>1) Condition for left</u></b>
+## <b><u>1) Condition for left</u></b>
 
 Whenever the bot takes a <b>left</b>, it simply has to <b>subtract 1 from the previous reading</b> in array to get current reading.
 
@@ -102,13 +118,13 @@ For eg. Assume the bot is moving in East i.e. 2 and takes a left, in this case i
 
 <b>Note</b> : Due to the circular definition from 1 to 4, subtracting 1 from 1, gives 4 i.e. West is left to North.
 
-### <b><u>2) Condition for Straight</u></b>
+## <b><u>2) Condition for Straight</u></b>
 
 Whenever the bot goes <b>straight</b>, the current reading is same as previous reading</b> in array.
 
 For eg. Assume the bot is moving in East i.e. 2 and takes goes straight, the current reading will be 2 which implies bot ccontinues to move in East
 
-### <b><u>3) Condition for Right</u></b>
+## <b><u>3) Condition for Right</u></b>
 
 Whenever the bot takes a <b>Right</b>, it simply has to <b>add 1 from the previous reading</b> in array to get current reading.
 
@@ -116,7 +132,7 @@ For eg. Assume the bot is moving in East i.e. 2 and takes a right, in this case 
 
 <b>Note</b> : Due to the circular definition from 1 to 4, adding 1 to 4, gives 1 i.e. North is right to West.
 
-### <b><u>4) Condition for Dead-End</u></b>
+## <b><u>4) Condition for Dead-End</u></b>
 
 Whenever the bot takes a <b>left</b>, it simply has to <b>subtract 2 from the previous reading</b> in array to get current reading.
 
@@ -135,7 +151,7 @@ Thus, the <b>General rule</b> :
 for all i > 0 and dry_run[0] = 1 (The diection which bot faces initially, is always North)
 ```
 
-### <b><u>Example</b></u>
+## <b><u>Example</b></u>
 
 ![image](https://user-images.githubusercontent.com/103832825/209423014-8fc88d07-ed65-4b5d-8687-d810516f8c0e.png)
 
@@ -159,7 +175,7 @@ Thus, we make use of simplify_path() function in our code :
 
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
-## <b><u>Problems with current algorithm</b></u>
+# <b><u>Problems with current algorithm</b></u>
 
 The <b>Left-Follow algorithm</b> helps in reducing the <b>redundancies</b> from the path. However, the problem with Left-Follow rule is that the entire maze does <b>not</b> get <b>mapped</b>, and thus the path so obtained in final_run[ ] is <b>not</b> the <b>most optimum path</b>.
 
@@ -169,12 +185,12 @@ For the general algorithm, we need a method to <b>map the whole maze</b>, which 
 
 Thus there are a several other alternatives, which help in mapping the maze completely and calculate shortest path. During our project, we studied several algorithms to traverse maze and find the shortest path.
 
-## <u><b>Other Algorithms</b></u>
+# <u><b>Other Algorithms</b></u>
 
 A maze can be represented as a graph G ( V, E ) , where V refers to the number of nodes and E refers to the number of edges.
 Thus we can modify and apply several graph algorithms over a given maze to solve it.
 
-### <b><u>Depth First Search (DFS)</b></u>
+## <b><u>Depth First Search (DFS)</b></u>
 
 The proposed maze mapping system is based on coordinate system and after mapping the whole maze as a graph in standard 'Adjacency-List representation' or 'Adjacency-Matrix representation' method, shortest path and shortest time path can be extracted using Dijkstra's algorithm or floodfill algorithm.
 
@@ -203,9 +219,9 @@ Apart from exploring all the nodes, we need to store the cost of edges too. In o
 
 We interfaced Encoders in our bot using interrupt service routine (ISR) to give proper distance between two nodes.This is the <a href = "https://github.com/PritK99/MazeBlaze-v2.1/tree/main/firmware/3_encoders" >code</a> for interfacing ISR in Esp32 and obtaining readings from encoders.
 
-### <b><u>Djikstra's Algorithm</b></u>
+## <b><u>Djikstra's Algorithm</b></u>
 
-### <b><u>FloodFill Algorithm </b></u>
+## <b><u>FloodFill Algorithm </b></u>
 
 Flood fill algorithm itself is analogous to flooding a maze with Water.Water continues to flow to flood the whole maze. Path traversed by the first water drops until it reaches the start location is the shortest path to reach that goal.
 
