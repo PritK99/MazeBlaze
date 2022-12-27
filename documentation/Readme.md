@@ -10,12 +10,14 @@
     * [Description Of Functions Used](#Description-of-functions-used)
 * [Left Follow Rule](#Left-follow-rule)
     * [Theory](#Theory)
-    * [Error Calculation](#Error-Calculation)
-    * [Use of PID](#Use-of-PID)
-    * [Use of Wifi module](#Use-of-wifi-module)
-    * [Algorithm](#Algorithm)
+    * [Implementation](#Implementation)
+    * [Example](#example)
     * [Description Of Functions Used](#Description-of-functions-used)
-
+    * [Problems with current algorithm](#problems-with-current-algorithm)
+* [Other Algorithms](#Other-algorithms)
+    * [Depth First Search (DFS)](Depth-first-search-DFS)
+    * [Floodfill algorithm](#Floodfill-algorithm)
+    * [Djikstra's algorithm](#Djikstra's-algorithm)
 # <b><u>PID Contoller</b></u>
 
 ## <b><u>Theory</b></u>
@@ -110,7 +112,7 @@ We always consider that the bot initially is always facing the North direction. 
 Once established, these directions are fixed with respect to world frame, and the bot keeps track of all these directions whenever it takes turns.
 
 Our program is going to keep track of the serial numbers (direction index) of the above assumptions only. When ever our robot encounters a node or turns, it has to make an entry of one of these direction index into the direction array.
-## <b><u>1) Condition for left</u></b>
+### <b><u>1) Condition for left</u></b>
 
 Whenever the bot takes a <b>left</b>, it simply has to <b>subtract 1 from the previous reading</b> in array to get current reading.
 
@@ -118,13 +120,13 @@ For eg. Assume the bot is moving in East i.e. 2 and takes a left, in this case i
 
 <b>Note</b> : Due to the circular definition from 1 to 4, subtracting 1 from 1, gives 4 i.e. West is left to North.
 
-## <b><u>2) Condition for Straight</u></b>
+### <b><u>2) Condition for Straight</u></b>
 
 Whenever the bot goes <b>straight</b>, the current reading is same as previous reading</b> in array.
 
 For eg. Assume the bot is moving in East i.e. 2 and takes goes straight, the current reading will be 2 which implies bot ccontinues to move in East
 
-## <b><u>3) Condition for Right</u></b>
+### <b><u>3) Condition for Right</u></b>
 
 Whenever the bot takes a <b>Right</b>, it simply has to <b>add 1 from the previous reading</b> in array to get current reading.
 
@@ -132,7 +134,7 @@ For eg. Assume the bot is moving in East i.e. 2 and takes a right, in this case 
 
 <b>Note</b> : Due to the circular definition from 1 to 4, adding 1 to 4, gives 1 i.e. North is right to West.
 
-## <b><u>4) Condition for Dead-End</u></b>
+### <b><u>4) Condition for Dead-End</u></b>
 
 Whenever the bot takes a <b>left</b>, it simply has to <b>subtract 2 from the previous reading</b> in array to get current reading.
 
@@ -175,7 +177,7 @@ Thus, we make use of simplify_path() function in our code :
 
 ![image](https://user-images.githubusercontent.com/103832825/209433300-b896ce58-6e02-4112-8874-0370b74ad662.png)
 
-# <b><u>Problems with current algorithm</b></u>
+## <b><u>Problems with current algorithm</b></u>
 
 The <b>Left-Follow algorithm</b> helps in reducing the <b>redundancies</b> from the path. However, the problem with Left-Follow rule is that the entire maze does <b>not</b> get <b>mapped</b>, and thus the path so obtained in final_run[ ] is <b>not</b> the <b>most optimum path</b>.
 
