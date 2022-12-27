@@ -1,4 +1,4 @@
-# MazeBlaze-v2
+# MazeBlaze-v2.1
 
 # TABLE OF CONTENTS
 * [PID controller](#PID-Controller)
@@ -16,8 +16,9 @@
     * [Problems with current algorithm](#problems-with-current-algorithm)
 * [Other Algorithms](#Other-algorithms)
     * [Depth First Search (DFS)](#depth-first-search-dfs)
-    * [FloodFill algorithm](#FloodFill-algorithm-)
     * [Dijkstra's algorithm](#dijkstras-algorithm)
+    * [FloodFill algorithm](#FloodFill-algorithm-)
+
 # <b><u>PID Contoller</b></u>
 
 ## <b><u>Theory</b></u>
@@ -239,6 +240,14 @@ We interfaced Encoders in our bot using interrupt service routine (ISR) to give 
 
 ## <b><u>Dijkstra's Algorithm</b></u>
 
+Dijkstra's Algorithm finds the shortest path between a given node (which is called the "source node") and all other nodes in a graph.
+
+This algorithm uses the weights of the edges to find the path that minimizes the total distance (weight) between the source node and all other nodes.
+
+Here we assume that start is a source vertex, and distance to all the other vertices is infinity. Initially, we do not know the distances. 
+
+<a href = "https://github.com/Vishnuparammal/maze_runner">Click here</a> for reference to pseudo-code and implementation of Dijkstra's Algorithm.
+
 ## <b><u>FloodFill Algorithm </b></u>
 
 Flood fill algorithm itself is analogous to flooding a maze with Water.Water continues to flow to flood the whole maze. Path traversed by the first water drops until it reaches the start location is the shortest path to reach that goal.
@@ -265,5 +274,3 @@ This concept works well for micromouse which have fixed cells and walls. In case
 <a href = "https://www.youtube.com/watch?v=Zwh-QNlsurI">Click here</a> for an example of maze solved by floodfill. 
 
 <a href = "https://www.youtube.com/watch?v=7Q_RRomuXYk">Click here</a> for reference to pseudo-code and implementation of floodfill algorithm.
-
-Implementing these algorithms in MazeBlaze-v2.1 is one of our future aims.
