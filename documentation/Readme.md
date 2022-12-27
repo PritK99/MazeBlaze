@@ -15,7 +15,7 @@
     * [Description Of Functions Used](#Description-of-functions-used)
     * [Problems with current algorithm](#problems-with-current-algorithm)
 * [Other Algorithms](#Other-algorithms)
-    * [Depth First Search (DFS)](depth-first-search-dfs)
+    * [Depth First Search (DFS)](#depth-first-search-dfs)
     * [FloodFill algorithm](#FloodFill-algorithm-)
     * [Dijkstra's algorithm](#dijkstras-algorithm)
 # <b><u>PID Contoller</b></u>
