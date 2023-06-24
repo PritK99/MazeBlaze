@@ -18,7 +18,7 @@
 In this project, we will create a Line-following, Maze-solving bot which can find the shortest path in the given maze.
 
   ### Domains Explored
-Embedded C, Graph algorithms, electronics, Basics of PCB design etc.
+Control Systems, Embedded C, Graph algorithms, Electronics, Basics of PCB design
 
   ### Project Workflow 
 - Learn to design PCB and understand the design of PCB used in MazeBlaze bot
