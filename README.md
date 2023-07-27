@@ -1,4 +1,4 @@
-# MazeBlaze-v2.1
+# MazeBlaze
 
 ## Table of Contents
 
