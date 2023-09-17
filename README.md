@@ -25,7 +25,7 @@ Control Systems, Embedded C, Graph algorithms, Electronics, Basics of PCB design
 - Understand and improvise electronic components used in MazeBlaze bot
 - Testing Line-sensor-array, motor drivers and interfacing encoders.
 - Implementing left follow rule 
-- Implementing path plannig
+- Implementing path planing
 
 ## Demo
 
